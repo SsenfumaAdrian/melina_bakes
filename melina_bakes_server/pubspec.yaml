@@ -1,0 +1,28 @@
+name: melina_bakes_server
+description: Melina Bakes enterprise backend API built with Serverpod.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  melina_bakes_shared:
+    path: ../melina_bakes_shared
+  serverpod: ^2.1.0
+  serverpod_auth: ^2.1.0
+  serverpod_serialization: ^2.1.0
+  serverpod_client: ^2.1.0
+  crypto: ^3.0.5
+  uuid: ^4.4.0
+  image: ^4.2.0
+  intl: ^0.19.0
+  collection: ^1.18.0
+  meta: ^1.15.0
+
+dev_dependencies:
+  build_runner: ^2.4.12
+  serverpod_cli: ^2.1.0
+  lints: ^4.0.0
+  test: ^1.25.0
+  mocktail: ^1.0.4

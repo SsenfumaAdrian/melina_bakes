@@ -1,0 +1,6 @@
+# Serverpod secrets - never commit to version control
+passwords.yaml
+production.yaml
+certificates/
+*.pem
+*.key

@@ -1,0 +1,51 @@
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+flutter_*.png
+linked_*.ds
+unlinked.ds
+unlinked_spec.ds
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# Serverpod
+*.g.dart
+*.freezed.dart
+config/passwords.yaml
+config/production.yaml
+certificates/
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Docker volumes
+docker/postgres_data/
+docker/redis_data/
+
+# Test coverage
+coverage/
+
+# Generated docs
+docs/api/generated/

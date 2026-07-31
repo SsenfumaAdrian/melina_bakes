@@ -1,0 +1,134 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  DART_SDK: '3.5.0'
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  analyze-shared:
+    name: Analyze Shared Package
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: melina_bakes_shared
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ env.DART_SDK }}
+      - name: Install dependencies
+        run: dart pub get
+      - name: Analyze
+        run: dart analyze --fatal-infos
+      - name: Format check
+        run: dart format --set-exit-if-changed .
+      - name: Run tests
+        run: dart test
+
+  analyze-server:
+    name: Analyze Server
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: melina_bakes_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    defaults:
+      run:
+        working-directory: melina_bakes_server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ env.DART_SDK }}
+      - name: Install dependencies
+        run: dart pub get
+      - name: Generate Serverpod code
+        run: dart run serverpod_cli generate
+      - name: Analyze
+        run: dart analyze --fatal-infos
+      - name: Format check
+        run: dart format --set-exit-if-changed .
+      - name: Run migrations
+        run: dart bin/main.dart --apply-migrations
+        env:
+          DATABASE_URL: postgres://test:test@localhost:5432/melina_bakes_test
+      - name: Run tests
+        run: dart test
+        env:
+          DATABASE_URL: postgres://test:test@localhost:5432/melina_bakes_test
+
+  analyze-client:
+    name: Analyze Flutter Client
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+      - name: Install dependencies (Shared)
+        run: |
+          cd melina_bakes_shared
+          dart pub get
+      - name: Install dependencies (Server Client)
+        run: |
+          cd melina_bakes_server
+          dart pub get
+          dart run serverpod_cli generate
+      - name: Install dependencies (Client)
+        run: |
+          cd melina_bakes_client
+          flutter pub get
+      - name: Analyze
+        run: |
+          cd melina_bakes_client
+          flutter analyze --fatal-infos
+      - name: Format check
+        run: |
+          cd melina_bakes_client
+          dart format --set-exit-if-changed .
+      - name: Run tests
+        run: |
+          cd melina_bakes_client
+          flutter test
+
+  build-web:
+    name: Build Flutter Web
+    runs-on: ubuntu-latest
+    needs: [analyze-shared, analyze-client]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+      - name: Install dependencies
+        run: |
+          cd melina_bakes_shared && dart pub get
+          cd ../melina_bakes_server && dart pub get && dart run serverpod_cli generate
+          cd ../melina_bakes_client && flutter pub get
+      - name: Build web
+        run: |
+          cd melina_bakes_client
+          flutter build web --release
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: melina_bakes_client/build/web/

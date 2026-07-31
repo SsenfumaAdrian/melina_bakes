@@ -1,0 +1,119 @@
+# Serverpod configuration file for Melina Bakes
+# This file configures the server, database, and other services
+
+# Server configuration
+apiServer:
+  port: 8080
+  publicHost: localhost
+  publicPort: 8080
+  publicScheme: http
+
+# Insights server (for Serverpod insights)
+insightsServer:
+  port: 8081
+  publicHost: localhost
+  publicPort: 8081
+  publicScheme: http
+
+# Web server (for Serverpod web interface)
+webServer:
+  port: 8082
+  publicHost: localhost
+  publicPort: 8082
+  publicScheme: http
+
+# Database configuration
+database:
+  host: localhost
+  port: 5432
+  name: melina_bakes_dev
+  user: melina_admin
+  password: melina_secure_password_2024
+  requireSsl: false
+  maxConnectionCount: 10
+
+# Redis configuration (for caching and sessions)
+redis:
+  enabled: true
+  host: localhost
+  port: 6379
+
+# Logging configuration
+logging:
+  enabled: true
+  logFilePath: logs/server.log
+  maxLogFileSize: 10485760  # 10MB
+  maxLogFiles: 10
+
+# Authentication configuration
+auth:
+  enabled: true
+  jwtSecret: melina_jwt_secret_key_change_in_production
+  jwtIssuer: melina-bakes-server
+  jwtAudience: melina-bakes-client
+  accessTokenDuration: 900  # 15 minutes
+  refreshTokenDuration: 604800  # 7 days
+  passwordHashAlgorithm: argon2id
+  passwordHashMemory: 65536
+  passwordHashIterations: 3
+  passwordHashParallelism: 4
+
+# Rate limiting
+rateLimiting:
+  enabled: true
+  maxRequestsPerMinute: 100
+  maxAuthRequestsPerMinute: 10
+
+# File upload configuration
+uploads:
+  enabled: true
+  maxFileSize: 10485760  # 10MB
+  allowedExtensions:
+    - jpg
+    - jpeg
+    - png
+    - gif
+    - webp
+  storagePath: uploads/
+  generateThumbnails: true
+  thumbnailSizes:
+    - 150x150
+    - 300x300
+    - 600x600
+
+# Email configuration (for notifications)
+email:
+  enabled: true
+  smtpHost: smtp.gmail.com
+  smtpPort: 587
+  smtpUser: noreply@melinabakes.com
+  smtpPassword: ''
+  useTls: true
+  fromAddress: noreply@melinabakes.com
+  fromName: Melina Bakes
+
+# SMS configuration (for notifications)
+sms:
+  enabled: false
+  provider: twilio
+  accountSid: ''
+  authToken: ''
+  fromNumber: ''
+
+# Payment providers configuration
+payments:
+  stripe:
+    enabled: false
+    publishableKey: ''
+    secretKey: ''
+    webhookSecret: ''
+  flutterwave:
+    enabled: false
+    publicKey: ''
+    secretKey: ''
+    encryptionKey: ''
+  paypal:
+    enabled: false
+    clientId: ''
+    clientSecret: ''
+    sandbox: true
