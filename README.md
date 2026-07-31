@@ -9,6 +9,25 @@
 
 ---
 
+## 🏗️ Project Status
+
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 1 | ✅ Complete | Architecture, Monorepo, Docker, CI/CD, Shared Package |
+| 2 | ✅ Complete | Database Design, Serverpod Models, Migrations, Repositories |
+| 3 | ✅ Complete | Authentication (Argon2id, JWT, RBAC, Email) |
+| 4 | 🔄 Next | Backend APIs (Products, Cart, Orders, Payments) |
+| 5 | ⏳ Pending | Flutter Foundation (Theme, Router, State Management) |
+| 6 | ⏳ Pending | Product Catalog (UI) |
+| 7 | ⏳ Pending | Shopping Cart |
+| 8 | ⏳ Pending | Order Management |
+| 9 | ⏳ Pending | Admin Dashboard |
+| 10 | ⏳ Pending | Deployment & DevOps |
+
+**📋 See [PROGRESS.md](PROGRESS.md) for detailed build status and handoff notes.**
+
+---
+
 ## 📋 Table of Contents
 
 - [Architecture Overview](#architecture-overview)
@@ -58,7 +77,7 @@ Melina Bakes follows **Clean Architecture** and **Domain-Driven Design (DDD)** p
 |------------|---------|
 | Flutter Web | Cross-platform UI framework |
 | Material 3 | Modern design system |
-| Riverpod | Reactive state management |
+| Riverpod 2.0 | Reactive state management |
 | GoRouter | Declarative routing |
 | Dio | HTTP client with interceptors |
 | Freezed | Immutable data classes |
@@ -69,8 +88,8 @@ Melina Bakes follows **Clean Architecture** and **Domain-Driven Design (DDD)** p
 ### Backend
 | Technology | Purpose |
 |------------|---------|
-| Serverpod | Dart backend framework |
-| PostgreSQL | Primary database |
+| Serverpod 2.1 | Dart backend framework |
+| PostgreSQL 15 | Primary database |
 | JWT | Stateless authentication |
 | Argon2id | Password hashing |
 | WebSocket | Real-time updates |
@@ -82,7 +101,6 @@ Melina Bakes follows **Clean Architecture** and **Domain-Driven Design (DDD)** p
 | Docker | Containerization |
 | Docker Compose | Local orchestration |
 | GitHub Actions | CI/CD pipelines |
-| Terraform | Infrastructure as Code |
 | Nginx | Reverse proxy & load balancing |
 
 ---
@@ -141,7 +159,7 @@ melina_bakes/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-org/melina_bakes.git
+git clone https://github.com/SsenfumaAdrian/melina_bakes.git
 cd melina_bakes
 
 # 2. Start infrastructure services
@@ -168,10 +186,10 @@ flutter run -d chrome
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 1 | Architecture & Foundation | 🔄 In Progress |
-| 2 | Database Design & Models | ⏳ Pending |
-| 3 | Authentication System | ⏳ Pending |
-| 4 | Backend APIs | ⏳ Pending |
+| 1 | Architecture & Foundation | ✅ Complete |
+| 2 | Database Design & Models | ✅ Complete |
+| 3 | Authentication System | ✅ Complete |
+| 4 | Backend APIs | 🔄 Next |
 | 5 | Flutter Foundation | ⏳ Pending |
 | 6 | Product Catalog | ⏳ Pending |
 | 7 | Shopping Cart | ⏳ Pending |
@@ -190,3 +208,8 @@ Please read our [Contributing Guide](docs/CONTRIBUTING.md) before submitting PRs
 ## 📄 License
 
 Proprietary - Melina Bakes Enterprise Platform. All rights reserved.
+
+---
+
+**Owner:** Ssenfuma Adrian <adrianssenfuma@gmail.com>  
+**Repository:** https://github.com/SsenfumaAdrian/melina_bakes.git
