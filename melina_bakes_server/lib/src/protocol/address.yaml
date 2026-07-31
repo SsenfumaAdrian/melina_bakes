@@ -1,0 +1,37 @@
+### Address Entity
+### Customer shipping/billing addresses.
+class: Address
+ table: addresses
+ fields:
+   ### Relations
+   userId: int, parent=users
+
+   ### Identity
+   label: String?
+   recipientName: String
+   phoneNumber: String?
+
+   ### Address
+   streetAddress: String
+   apartment: String?
+   city: String
+   state: String?
+   postalCode: String?
+   country: String
+
+   ### Location
+   latitude: double?
+   longitude: double?
+
+   ### Status
+   isDefault: bool
+   isActive: bool
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   addr_user_idx: userId
+   addr_default_idx: isDefault
+   addr_active_idx: isActive

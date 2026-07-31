@@ -1,0 +1,28 @@
+### Order Item Entity
+### Items within an order (snapshot of product at purchase time).
+class: OrderItem
+ table: order_items
+ fields:
+   ### Relations
+   orderId: int, parent=orders
+   productId: int, parent=products
+
+   ### Product Snapshot
+   productName: String
+   productSku: String?
+   productImageUrl: String?
+
+   ### Pricing
+   unitPrice: double
+   quantity: int
+   totalPrice: double
+
+   ### Notes
+   specialInstructions: String?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   oi_order_idx: orderId
+   oi_product_idx: productId

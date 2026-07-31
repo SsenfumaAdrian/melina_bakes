@@ -1,0 +1,35 @@
+### Purchase Order Entity
+### Orders placed with suppliers.
+class: PurchaseOrder
+ table: purchase_orders
+ fields:
+   ### Relations
+   supplierId: int, parent=suppliers
+   createdByUserId: int, parent=users
+
+   ### Identity
+   orderNumber: String, unique
+
+   ### Status
+   status: String  # draft, sent, confirmed, received, cancelled
+
+   ### Pricing
+   subtotal: double
+   taxAmount: double
+   total: double
+
+   ### Delivery
+   expectedDeliveryDate: DateTime?
+   receivedAt: DateTime?
+
+   ### Notes
+   notes: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   po_number_idx: orderNumber
+   po_supplier_idx: supplierId
+   po_status_idx: status

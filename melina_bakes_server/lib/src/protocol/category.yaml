@@ -1,0 +1,37 @@
+### Category Entity
+### Product categories with hierarchical support.
+class: Category
+ table: categories
+ fields:
+   ### Hierarchy
+   parentId: int?, parent=categories
+
+   ### Identity
+   name: String
+   slug: String, unique
+   description: String?
+
+   ### Media
+   imageUrl: String?
+   iconUrl: String?
+
+   ### Display
+   sortOrder: int
+   isActive: bool
+   isFeatured: bool
+
+   ### SEO
+   metaTitle: String?
+   metaDescription: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+   deletedAt: DateTime?
+
+ indexes:
+   cat_slug_idx: slug
+   cat_parent_idx: parentId
+   cat_active_idx: isActive
+   cat_featured_idx: isFeatured
+   cat_sort_idx: sortOrder

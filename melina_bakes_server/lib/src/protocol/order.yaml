@@ -1,0 +1,52 @@
+### Order Entity
+### Customer orders with full pricing breakdown.
+class: Order
+ table: orders
+ fields:
+   ### Relations
+   userId: int, parent=users
+   cartId: int?, parent=carts
+
+   ### Order Identity
+   orderNumber: String, unique
+
+   ### Status
+   status: OrderStatus
+   paymentStatus: PaymentStatus
+
+   ### Pricing
+   subtotal: double
+   discountAmount: double
+   taxAmount: double
+   deliveryCharge: double
+   total: double
+
+   ### Coupon
+   couponCode: String?
+   couponDiscount: double
+
+   ### Delivery
+   deliveryAddressId: int?, parent=addresses
+   deliveryMethod: String
+   estimatedDeliveryDate: DateTime?
+   deliveredAt: DateTime?
+
+   ### Customer Info (snapshot at order time)
+   customerName: String
+   customerEmail: String
+   customerPhone: String?
+
+   ### Notes
+   customerNotes: String?
+   staffNotes: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   order_number_idx: orderNumber
+   order_user_idx: userId
+   order_status_idx: status
+   order_payment_idx: paymentStatus
+   order_created_idx: createdAt

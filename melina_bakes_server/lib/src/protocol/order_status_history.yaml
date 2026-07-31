@@ -1,0 +1,25 @@
+### Order Status History Entity
+### Audit trail of all status changes.
+class: OrderStatusHistory
+ table: order_status_history
+ fields:
+   ### Relations
+   orderId: int, parent=orders
+   changedByUserId: int?, parent=users
+
+   ### Status Change
+   previousStatus: OrderStatus?
+   newStatus: OrderStatus
+   reason: String?
+
+   ### Metadata
+   changedByRole: UserRole?
+   ipAddress: String?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   osh_order_idx: orderId
+   osh_status_idx: newStatus
+   osh_created_idx: createdAt

@@ -1,0 +1,24 @@
+### Purchase Order Item Entity
+### Individual items in a purchase order.
+class: PurchaseOrderItem
+ table: purchase_order_items
+ fields:
+   ### Relations
+   purchaseOrderId: int, parent=purchase_orders
+   ingredientId: int, parent=ingredients
+
+   ### Quantity & Price
+   quantity: double
+   unitPrice: double
+   totalPrice: double
+
+   ### Receipt
+   receivedQuantity: double
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   poi_po_idx: purchaseOrderId
+   poi_ingredient_idx: ingredientId

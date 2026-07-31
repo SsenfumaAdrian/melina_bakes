@@ -1,0 +1,33 @@
+### Audit Log Entity
+### Security and compliance audit trail.
+class: AuditLog
+ table: audit_logs
+ fields:
+   ### Actor
+   userId: int?, parent=users
+   userRole: UserRole?
+   ipAddress: String?
+   userAgent: String?
+
+   ### Action
+   action: String
+   entityType: String
+   entityId: int?
+
+   ### Data
+   oldValues: Map<String, dynamic>?
+   newValues: Map<String, dynamic>?
+   metadata: Map<String, dynamic>?
+
+   ### Result
+   success: bool
+   failureReason: String?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   al_user_idx: userId
+   al_action_idx: action
+   al_entity_idx: entityType, entityId
+   al_created_idx: createdAt

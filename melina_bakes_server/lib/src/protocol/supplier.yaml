@@ -1,0 +1,24 @@
+### Supplier Entity
+### Ingredient and material suppliers.
+class: Supplier
+ table: suppliers
+ fields:
+   ### Identity
+   name: String
+   contactPerson: String?
+
+   ### Contact
+   email: String?
+   phone: String?
+   address: String?
+
+   ### Status
+   isActive: bool
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+   deletedAt: DateTime?
+
+ indexes:
+   sup_active_idx: isActive

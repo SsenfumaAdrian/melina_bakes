@@ -1,0 +1,36 @@
+### User Entity
+### Core user account for customers, staff, managers, and admins.
+class: User
+ table: users
+ fields:
+   ### Authentication
+   email: String, unique
+   passwordHash: String
+
+   ### Profile
+   firstName: String?
+   lastName: String?
+   phoneNumber: String?
+   avatarUrl: String?
+
+   ### Role & Status
+   role: UserRole
+   isEmailVerified: bool
+   isActive: bool
+
+   ### Security
+   failedLoginAttempts: int
+   lockedUntil: DateTime?
+   lastLoginAt: DateTime?
+   lastLoginIp: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+   deletedAt: DateTime?
+
+ indexes:
+   user_email_idx: email
+   user_role_idx: role
+   user_active_idx: isActive
+   user_deleted_idx: deletedAt

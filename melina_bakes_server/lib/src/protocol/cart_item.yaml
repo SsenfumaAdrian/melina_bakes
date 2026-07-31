@@ -1,0 +1,24 @@
+### Cart Item Entity
+### Individual items within a cart.
+class: CartItem
+ table: cart_items
+ fields:
+   ### Relations
+   cartId: int, parent=carts
+   productId: int, parent=products
+
+   ### Quantity & Price
+   quantity: int
+   unitPrice: double
+   totalPrice: double
+
+   ### Notes
+   specialInstructions: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   ci_cart_idx: cartId
+   ci_product_idx: productId

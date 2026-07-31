@@ -1,0 +1,27 @@
+### Refresh Token Entity
+### Stores long-lived refresh tokens for JWT rotation.
+class: RefreshToken
+ table: refresh_tokens
+ fields:
+   ### Relations
+   userId: int, parent=users
+
+   ### Token Data
+   tokenHash: String, unique
+   tokenFamily: String
+
+   ### Metadata
+   deviceInfo: String?
+   ipAddress: String?
+
+   ### Expiry
+   expiresAt: DateTime
+   revokedAt: DateTime?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   rt_token_idx: tokenHash
+   rt_user_idx: userId
+   rt_expires_idx: expiresAt

@@ -1,0 +1,35 @@
+### Banner Entity
+### Homepage banners and promotional slides.
+class: Banner
+ table: banners
+ fields:
+   ### Content
+   title: String
+   subtitle: String?
+   description: String?
+
+   ### Media
+   imageUrl: String
+   mobileImageUrl: String?
+
+   ### Link
+   linkUrl: String?
+   linkText: String?
+
+   ### Display
+   position: String
+   sortOrder: int
+   isActive: bool
+
+   ### Scheduling
+   startsAt: DateTime?
+   expiresAt: DateTime?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   banner_position_idx: position
+   banner_active_idx: isActive
+   banner_sort_idx: sortOrder

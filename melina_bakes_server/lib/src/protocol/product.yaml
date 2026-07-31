@@ -1,0 +1,58 @@
+### Product Entity
+### Bakery products with pricing, inventory, and SEO.
+class: Product
+ table: products
+ fields:
+   ### Relations
+   categoryId: int, parent=categories
+
+   ### Identity
+   name: String
+   slug: String, unique
+   sku: String, unique
+   description: String?
+   shortDescription: String?
+
+   ### Pricing
+   basePrice: double
+   salePrice: double?
+   costPrice: double?
+
+   ### Inventory
+   quantityInStock: int
+   lowStockThreshold: int
+   trackInventory: bool
+
+   ### Status
+   status: ProductStatus
+   isFeatured: bool
+   isNew: bool
+
+   ### Media
+   primaryImageUrl: String?
+
+   ### SEO
+   metaTitle: String?
+   metaDescription: String?
+
+   ### Attributes (JSON for flexibility)
+   attributes: Map<String, dynamic>?
+
+   ### Weight & Dimensions
+   weightGrams: double?
+   allergens: String?
+   ingredients: String?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+   deletedAt: DateTime?
+
+ indexes:
+   prod_slug_idx: slug
+   prod_sku_idx: sku
+   prod_category_idx: categoryId
+   prod_status_idx: status
+   prod_featured_idx: isFeatured
+   prod_price_idx: basePrice
+   prod_stock_idx: quantityInStock

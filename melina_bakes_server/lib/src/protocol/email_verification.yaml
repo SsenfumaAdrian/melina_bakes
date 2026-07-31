@@ -1,0 +1,21 @@
+### Email Verification Entity
+### Tracks email verification tokens.
+class: EmailVerification
+ table: email_verifications
+ fields:
+   ### Relations
+   userId: int, parent=users
+
+   ### Token
+   tokenHash: String, unique
+
+   ### Status
+   verifiedAt: DateTime?
+   expiresAt: DateTime
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   ev_token_idx: tokenHash
+   ev_user_idx: userId

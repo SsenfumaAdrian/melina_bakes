@@ -1,0 +1,39 @@
+### Ingredient Entity
+### Raw ingredients for bakery products.
+class: Ingredient
+ table: ingredients
+ fields:
+   ### Identity
+   name: String
+   sku: String, unique
+   description: String?
+
+   ### Stock
+   quantityInStock: double
+   unitOfMeasure: String  # kg, g, l, ml, pcs
+   reorderLevel: double
+   reorderQuantity: double
+
+   ### Supplier
+   defaultSupplierId: int?, parent=suppliers
+
+   ### Status
+   status: InventoryStatus
+
+   ### Expiry
+   expiryDate: DateTime?
+   batchNumber: String?
+
+   ### Cost
+   unitCost: double?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+   deletedAt: DateTime?
+
+ indexes:
+   ing_sku_idx: sku
+   ing_status_idx: status
+   ing_supplier_idx: defaultSupplierId
+   ing_expiry_idx: expiryDate

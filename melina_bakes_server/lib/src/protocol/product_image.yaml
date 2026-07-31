@@ -1,0 +1,25 @@
+### Product Image Entity
+### Multiple images per product with alt text and sort order.
+class: ProductImage
+ table: product_images
+ fields:
+   ### Relations
+   productId: int, parent=products
+
+   ### Media
+   imageUrl: String
+   thumbnailUrl: String?
+   mediumUrl: String?
+
+   ### Metadata
+   altText: String?
+   sortOrder: int
+   isPrimary: bool
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   pi_product_idx: productId
+   pi_primary_idx: isPrimary
+   pi_sort_idx: sortOrder

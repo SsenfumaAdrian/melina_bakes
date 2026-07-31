@@ -1,0 +1,30 @@
+### Inventory Log Entity
+### Audit trail of all inventory changes.
+class: InventoryLog
+ table: inventory_logs
+ fields:
+   ### Relations
+   ingredientId: int, parent=ingredients
+   userId: int?, parent=users
+
+   ### Change
+   changeType: String  # purchase, usage, adjustment, waste, return
+   quantityChange: double
+   previousQuantity: double
+   newQuantity: double
+
+   ### Reference
+   referenceType: String?  # order, purchase_order, manual
+   referenceId: int?
+
+   ### Reason
+   reason: String?
+   notes: String?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   il_ingredient_idx: ingredientId
+   il_type_idx: changeType
+   il_created_idx: createdAt

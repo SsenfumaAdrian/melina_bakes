@@ -1,0 +1,32 @@
+### Cart Entity
+### Persistent shopping cart per user.
+class: Cart
+ table: carts
+ fields:
+   ### Relations
+   userId: int?, parent=users
+
+   ### Session (for guest carts)
+   sessionId: String?
+
+   ### Pricing
+   subtotal: double
+   discountAmount: double
+   taxAmount: double
+   deliveryCharge: double
+   total: double
+
+   ### Coupon
+   couponId: int?, parent=coupons
+
+   ### Status
+   isActive: bool
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   cart_user_idx: userId
+   cart_session_idx: sessionId
+   cart_active_idx: isActive

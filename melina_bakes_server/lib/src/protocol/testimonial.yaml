@@ -1,0 +1,25 @@
+### Testimonial Entity
+### Customer reviews and testimonials.
+class: Testimonial
+ table: testimonials
+ fields:
+   ### Content
+   customerName: String
+   customerTitle: String?
+   content: String
+   rating: int?
+
+   ### Media
+   customerImageUrl: String?
+
+   ### Display
+   isActive: bool
+   sortOrder: int
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   test_active_idx: isActive
+   test_sort_idx: sortOrder

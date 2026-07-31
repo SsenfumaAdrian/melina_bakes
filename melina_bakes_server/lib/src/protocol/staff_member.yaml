@@ -1,0 +1,29 @@
+### Staff Member Entity
+### Extended profile for staff, managers, and admins.
+class: StaffMember
+ table: staff_members
+ fields:
+   ### Relations
+   userId: int, unique, parent=users
+
+   ### Employment
+   employeeId: String, unique
+   department: String?
+   position: String?
+   hireDate: DateTime?
+   terminationDate: DateTime?
+
+   ### Compensation
+   salary: double?
+
+   ### Status
+   isActive: bool
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   sm_user_idx: userId
+   sm_employee_idx: employeeId
+   sm_active_idx: isActive

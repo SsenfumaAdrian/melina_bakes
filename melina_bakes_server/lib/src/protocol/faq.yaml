@@ -1,0 +1,22 @@
+### FAQ Entity
+### Frequently asked questions.
+class: FAQ
+ table: faqs
+ fields:
+   ### Content
+   question: String
+   answer: String
+   category: String?
+
+   ### Display
+   sortOrder: int
+   isActive: bool
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   faq_category_idx: category
+   faq_active_idx: isActive
+   faq_sort_idx: sortOrder

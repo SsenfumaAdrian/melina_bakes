@@ -1,0 +1,42 @@
+### Payment Entity
+### Payment transactions linked to orders.
+class: Payment
+ table: payments
+ fields:
+   ### Relations
+   orderId: int, parent=orders
+   userId: int, parent=users
+
+   ### Transaction
+   transactionId: String, unique
+   provider: PaymentMethod
+   providerTransactionId: String?
+
+   ### Amounts
+   amount: double
+   currency: String
+   fee: double?
+
+   ### Status
+   status: PaymentStatus
+   failureReason: String?
+
+   ### Metadata
+   providerResponse: String?
+   metadata: Map<String, dynamic>?
+
+   ### Refund
+   refundedAmount: double
+   refundedAt: DateTime?
+
+   ### Timestamps
+   createdAt: DateTime
+   updatedAt: DateTime
+
+ indexes:
+   pay_txn_idx: transactionId
+   pay_order_idx: orderId
+   pay_user_idx: userId
+   pay_provider_idx: provider
+   pay_status_idx: status
+   pay_created_idx: createdAt

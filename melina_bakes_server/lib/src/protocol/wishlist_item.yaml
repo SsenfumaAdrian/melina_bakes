@@ -1,0 +1,16 @@
+### Wishlist Item Entity
+### Customer wishlist entries.
+class: WishlistItem
+ table: wishlist_items
+ fields:
+   ### Relations
+   userId: int, parent=users
+   productId: int, parent=products
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   wi_user_idx: userId
+   wi_product_idx: productId
+   wi_unique: unique(userId, productId)

@@ -1,0 +1,20 @@
+### Coupon Usage Entity
+### Tracks individual coupon redemptions.
+class: CouponUsage
+ table: coupon_usage
+ fields:
+   ### Relations
+   couponId: int, parent=coupons
+   userId: int, parent=users
+   orderId: int, parent=orders
+
+   ### Usage
+   discountAmount: double
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   cu_coupon_idx: couponId
+   cu_user_idx: userId
+   cu_order_idx: orderId

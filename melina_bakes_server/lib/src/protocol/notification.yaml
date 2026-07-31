@@ -1,0 +1,32 @@
+### Notification Entity
+### In-app, email, SMS, and push notifications.
+class: Notification
+ table: notifications
+ fields:
+   ### Relations
+   userId: int, parent=users
+
+   ### Content
+   type: NotificationType
+   title: String
+   body: String
+   data: Map<String, dynamic>?
+   imageUrl: String?
+   actionUrl: String?
+
+   ### Delivery
+   channel: String  # in_app, email, sms, push
+   sentAt: DateTime?
+   readAt: DateTime?
+   failedAt: DateTime?
+   failureReason: String?
+
+   ### Timestamps
+   createdAt: DateTime
+
+ indexes:
+   notif_user_idx: userId
+   notif_type_idx: type
+   notif_channel_idx: channel
+   notif_read_idx: readAt
+   notif_created_idx: createdAt
