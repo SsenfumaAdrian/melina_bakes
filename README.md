@@ -19,8 +19,8 @@
 | 4 | ✅ Complete | Backend APIs (Products, Cart, Orders, Payments, Admin, Customer) |
 | 5 | ✅ Complete | Flutter Foundation (Theme, Router, Network, Auth UI, Home) |
 | 6 | ✅ Complete | Product Catalog UI (Listing, Detail, Categories, Search) |
-| 7 | 🔄 **Next** | Shopping Cart |
-| 8 | ⏳ Pending | Order Management |
+| 7 | ✅ Complete | Shopping Cart (Add, Update, Remove, Coupon, Checkout) |
+| 8 | 🔄 **Next** | Order Management |
 | 9 | ⏳ Pending | Admin Dashboard |
 | 10 | ⏳ Pending | Deployment & DevOps |
 
@@ -196,8 +196,16 @@ flutter run -d chrome
 - **Search**: Debounced suggestions, results grid, empty states
 - **Product Card**: Sale badges, ratings, quick-add button
 
-### 🔄 Phase 7 — Shopping Cart *(In Progress)*
-### ⏳ Phase 8 — Order Management
+### ✅ Phase 7 — Shopping Cart
+- **Cart Domain**: CartItemEntity, CartEntity with totals calculation
+- **Cart Data**: Remote datasource, repository implementation
+- **Cart Screen**: Item list, quantity controls, remove, clear all, summary
+- **Cart Summary**: Subtotal, discount, tax, delivery, total
+- **Add to Cart**: Animated button with feedback
+- **Cart Badge**: Live item count on navigation
+- **Coupon**: Apply / remove coupon support
+
+### 🔄 Phase 8 — Order Management *(In Progress)*
 ### ⏳ Phase 9 — Admin Dashboard
 ### ⏳ Phase 10 — Deployment & DevOps
 

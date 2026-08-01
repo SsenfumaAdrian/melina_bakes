@@ -10,6 +10,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../cart/presentation/widgets/cart_badge.dart';
 
 class ShellScreen extends ConsumerStatefulWidget {
   final Widget child;
@@ -70,16 +71,33 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
 
   List<NavigationRailDestination> _buildRailDestinations() {
     final routes = widget.isAdmin ? _adminRoutes : _customerRoutes;
-    return routes.map((r) => NavigationRailDestination(
-      icon: Icon(r.icon), selectedIcon: Icon(r.selectedIcon), label: Text(r.label),
-    )).toList();
+    return routes.map((r) {
+      final icon = r.path == RouteNames.cart
+          ? const CartBadge(child: Icon(Icons.shopping_cart_outlined))
+          : Icon(r.icon);
+      final selectedIcon = r.path == RouteNames.cart
+          ? const CartBadge(child: Icon(Icons.shopping_cart))
+          : Icon(r.selectedIcon);
+      return NavigationRailDestination(
+        icon: icon, selectedIcon: selectedIcon, label: Text(r.label),
+      );
+    }).toList();
   }
 
   List<NavigationDestination> _buildNavDestinations() {
     final routes = widget.isAdmin ? _adminRoutes : _customerRoutes;
-    return routes.map((r) => NavigationDestination(
-      icon: Icon(r.icon), selectedIcon: Icon(r.selectedIcon), label: r.label,
-    )).toList();
+    return routes.map((r) {
+      if (r.path == RouteNames.cart) {
+        return NavigationDestination(
+          icon: const CartBadge(child: Icon(Icons.shopping_cart_outlined)),
+          selectedIcon: const CartBadge(child: Icon(Icons.shopping_cart)),
+          label: r.label,
+        );
+      }
+      return NavigationDestination(
+        icon: Icon(r.icon), selectedIcon: Icon(r.selectedIcon), label: r.label,
+      );
+    }).toList();
   }
 
   Widget _buildUserMenu(BuildContext context, UserEntity? user) {

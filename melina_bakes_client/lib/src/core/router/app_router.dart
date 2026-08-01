@@ -16,6 +16,7 @@ import '../../features/products/presentation/screens/product_detail_screen.dart'
 import '../../features/products/presentation/screens/category_list_screen.dart';
 import '../../features/products/presentation/screens/category_detail_screen.dart';
 import '../../features/products/presentation/screens/search_screen.dart';
+import '../../features/cart/presentation/screens/cart_screen.dart';
 import 'route_names.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -38,7 +39,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: RouteNames.categories, builder: (_, __) => const CategoryListScreen()),
           GoRoute(path: RouteNames.categoryDetail, builder: (context, state) => CategoryDetailScreen(slug: state.pathParameters['slug']!)),
           GoRoute(path: '/search', builder: (_, __) => const SearchScreen()),
-          GoRoute(path: RouteNames.cart, builder: (_, __) => const Placeholder(key: ValueKey('cart'))),
+          GoRoute(path: RouteNames.cart, builder: (_, __) => const CartScreen()),
           GoRoute(path: RouteNames.checkout, builder: (_, __) => const Placeholder(key: ValueKey('checkout')), redirect: (_, s) => _requireAuth(ref, s)),
           GoRoute(path: RouteNames.orders, builder: (_, __) => const Placeholder(key: ValueKey('orders')), redirect: (_, s) => _requireAuth(ref, s)),
           GoRoute(path: RouteNames.orderDetail, builder: (_, __) => const Placeholder(key: ValueKey('order-detail')), redirect: (_, s) => _requireAuth(ref, s)),
