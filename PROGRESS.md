@@ -8,15 +8,15 @@
 
 ---
 
-## 📊 Current Status: PHASE 3 COMPLETE → PHASE 4 NEXT
+## 📊 Current Status: PHASE 4 COMPLETE → PHASE 5 NEXT
 
 | Phase | Name | Status | Commit |
 |-------|------|--------|--------|
 | 1 | Architecture & Foundation | ✅ Complete | `63eaf48` |
 | 2 | Database Design & Models | ✅ Complete | `46045ad` |
 | 3 | Authentication System | ✅ Complete | `66e5d5e` |
-| 4 | Backend APIs | 🔄 **NEXT** | — |
-| 5 | Flutter Foundation | ⏳ Pending | — |
+| 4 | Backend APIs | ✅ **COMPLETE** | — |
+| 5 | Flutter Foundation | 🔄 **NEXT** | — |
 | 6 | Product Catalog UI | ⏳ Pending | — |
 | 7 | Shopping Cart | ⏳ Pending | — |
 | 8 | Order Management | ⏳ Pending | — |
@@ -40,263 +40,129 @@
 - Repository Pattern with Dependency Injection
 - MVVM where appropriate
 
-### Monorepo Structure
-```
-melina_bakes/
-├── melina_bakes_client/     # Flutter Web
-├── melina_bakes_server/     # Serverpod Backend
-├── melina_bakes_shared/     # Shared Dart package
-├── docker/                  # Docker configs
-├── infrastructure/          # Terraform/K8s
-├── docs/                    # Documentation
-└── .github/workflows/       # CI/CD
-```
-
 ---
 
 ## ✅ PHASE 1: Architecture & Foundation (COMPLETE)
 
-**Commit:** `63eaf48` (GPG Signed)
+**Commit:** `63eaf48`
 
-### Deliverables
-- Complete monorepo structure (109 folders)
-- `melos.yaml` for monorepo management
-- `pubspec.yaml` for all 3 packages (client, server, shared)
-- `analysis_options.yaml` with 200+ lint rules
-- Serverpod configs (`development.yaml`, `production.yaml`)
-- Docker Compose (dev + prod)
-- Nginx reverse proxy configs
-- GitHub Actions CI/CD (CI + CD pipelines)
+- Monorepo structure (109 folders)
+- melos.yaml, pubspec.yaml, analysis_options.yaml
+- Serverpod configs (dev + prod)
+- Docker Compose (dev + prod), Nginx configs
+- GitHub Actions CI/CD
 - Architecture Decision Records (10 ADRs)
-
-### Shared Package (`melina_bakes_shared`)
-- **8 Enums:** UserRole, OrderStatus, PaymentStatus, PaymentMethod, ProductStatus, InventoryStatus, NotificationType, CouponType
-- **Constants:** AppConstants, ApiConstants (40+ endpoints), StorageKeys
-- **Utils:** Result<R,F> (functional error handling), Validators (email, password, phone, etc.), Extensions (String, DateTime, List)
-- **Models:** PaginatedResponse<T>
+- Shared package: 8 enums, constants, Result<T,F>, validators, extensions
 
 ---
 
 ## ✅ PHASE 2: Database Design & Models (COMPLETE)
 
-**Commit:** `46045ad` (GPG Signed)
+**Commit:** `46045ad`
 
-### Serverpod Protocol Files (28 YAML files)
-All in `melina_bakes_server/lib/src/protocol/`
-
-| Domain | Files |
-|--------|-------|
-| Auth | `user.yaml`, `refresh_token.yaml`, `password_reset.yaml`, `email_verification.yaml` |
-| Catalog | `category.yaml`, `product.yaml`, `product_image.yaml` |
-| Cart | `cart.yaml`, `cart_item.yaml` |
-| Orders | `order.yaml`, `order_item.yaml`, `order_status_history.yaml` |
-| Payments | `payment.yaml` |
-| Customer | `address.yaml`, `wishlist_item.yaml` |
-| Notifications | `notification.yaml` |
-| Admin/CMS | `coupon.yaml`, `coupon_usage.yaml`, `banner.yaml`, `testimonial.yaml`, `faq.yaml` |
-| Inventory | `ingredient.yaml`, `supplier.yaml`, `purchase_order.yaml`, `purchase_order_item.yaml`, `inventory_log.yaml` |
-| Audit | `audit_log.yaml`, `staff_member.yaml` |
-
-### Generated Dart Models
-- `user.dart` — Full User model with UserTable
-- `product.dart` — Product with pricing logic, stock checks
-- `order.dart` — Order with status tracking
-- `category.dart` — Category with hierarchy support
-
-### Database Migration
-**File:** `migrations/0001_initial_schema.sql`
-- 25 tables with full constraints
-- 60+ indexes for performance
-- 30+ foreign keys with ON DELETE policies
-- 3 materialized views (daily_revenue, low_stock_products, low_stock_ingredients)
-- Auto-update triggers on all mutable tables
-- Soft delete pattern
-- Full-text search (pg_trgm)
-- Seed data (admin user, default categories)
-
-### Repository Interfaces
-- `user_repository.dart` — 10 operations
-- `product_repository.dart` — 11 operations
-- `order_repository.dart` — 7 operations
-- `category_repository.dart` — 6 operations
+- 28 Serverpod protocol YAML files
+- Generated Dart models (User, Product, Order, Category)
+- PostgreSQL migration: 25 tables, 60+ indexes, 30+ FKs
+- Repository interfaces (User, Product, Order, Category)
+- Database views: daily_revenue, low_stock_products, low_stock_ingredients
 
 ---
 
 ## ✅ PHASE 3: Authentication System (COMPLETE)
 
-**Commit:** `66e5d5e` (GPG Signed)
+**Commit:** `66e5d5e`
 
-### Services
-| File | Purpose |
-|------|---------|
-| `services/auth/password_service.dart` | Argon2id hashing (64MB, 3 iterations, 4 parallelism) |
-| `services/auth/jwt_service.dart` | HS256 JWT creation/validation, claims extraction |
-| `services/auth/auth_service.dart` | Full auth business logic |
-| `services/notification/email_service.dart` | 6 HTML email templates |
-
-### AuthService Features
-- `register()` — Email validation, password strength, hash, create user, issue tokens
-- `login()` — Credential verification, account lockout check (5 attempts, 30min), password rehashing, token generation
-- `refreshAccessToken()` — Token rotation (new refresh token on every use)
-- `validateAccessToken()` — JWT validation + user lookup
-- `requestPasswordReset()` — Enumeration-safe (always returns success)
-- `resetPassword()` — Token validation + password update
-- `changePassword()` — Current password verification + update
-
-### AuthEndpoint (10 REST Endpoints)
-- `POST /auth/register`
-- `POST /auth/login`
-- `POST /auth/refresh`
-- `POST /auth/logout`
-- `POST /auth/forgot-password`
-- `POST /auth/reset-password`
-- `POST /auth/change-password`
-- `POST /auth/verify-email`
-- `POST /auth/resend-verification`
-- `GET /auth/me`
-
-### AuthMiddleware
-- JWT validation from Authorization header
-- Role-based access control (RBAC) with hierarchy
-- Optional auth middleware for guest-accessible endpoints
-- Email verification enforcement (configurable)
-
-### UserRepositoryImpl
-- Full CRUD operations
-- Soft delete with email anonymization
-- Pagination with filtering
-- Login tracking (failed attempts, lockout, IP)
-- Password updates
-
-### Security Features
-- Argon2id password hashing (memory-hard)
-- HS256 JWT with 15-min access / 7-day refresh
-- Token rotation on every refresh
-- Account lockout (5 failed attempts → 30 min)
-- Constant-time password comparison
-- Password rehashing on login when params change
-- Secure token generation (Random.secure(), 64 bytes)
-- Email enumeration prevention
+- PasswordService (Argon2id)
+- JwtService (HS256)
+- AuthService (register, login, refresh, lockout, reset)
+- AuthEndpoint (10 REST endpoints)
+- AuthMiddleware (RBAC)
+- EmailService (6 HTML templates)
+- UserRepositoryImpl (CRUD + pagination)
 
 ---
 
-## 🔄 PHASE 4: BACKEND APIs (NEXT — BUILD THIS NOW)
+## ✅ PHASE 4: BACKEND APIs (COMPLETE)
+
+### Endpoints Created
+
+| Endpoint | File | Routes |
+|----------|------|--------|
+| **Bakery** | `endpoints/bakery/bakery_endpoint.dart` | GET /categories, GET /categories/:slug, GET /products, GET /products/:slug, GET /products/featured, GET /products/search |
+| **Cart** | `endpoints/cart/cart_endpoint.dart` | GET /cart, POST /cart/items, PUT /cart/items/:id, DELETE /cart/items/:id, POST /cart/apply-coupon, POST /cart/remove-coupon |
+| **Orders** | `endpoints/orders/orders_endpoint.dart` | POST /orders, GET /orders, GET /orders/:number, GET /orders/:number/track, POST /orders/:id/cancel |
+| **Payments** | `endpoints/payments/payments_endpoint.dart` | POST /payments/intent, POST /payments/confirm, POST /payments/webhook |
+| **Customer** | `endpoints/customer/customer_endpoint.dart` | GET/PUT /customer/profile, GET/POST/PUT/DELETE /customer/addresses, GET /customer/orders, GET/POST/DELETE /customer/wishlist, GET/PUT /customer/notifications |
+| **Admin** | `endpoints/admin/admin_endpoint.dart` | GET /admin/dashboard, GET/PUT /admin/orders, GET /admin/customers, GET/POST/PUT/DELETE /admin/products, GET/PUT /admin/inventory, GET /admin/reports, GET/POST /admin/staff |
+
+### Payment Service Architecture
+- `services/payment/payment_service.dart` — Abstract PaymentProvider interface
+- StripeProvider, FlutterwaveProvider, PayPalProvider, MobileMoneyProvider
+- createPaymentIntent, confirmPayment, refund, webhook verification
+
+### Total API Endpoints: 40+ REST endpoints covering all 13 system modules
+
+---
+
+## 🔄 PHASE 5: FLUTTER FOUNDATION (NEXT — BUILD THIS NOW)
 
 ### What Needs to Be Built
 
-#### 1. Product Catalog Endpoints
-```
-GET    /api/v1/categories              → listCategories
-GET    /api/v1/categories/:slug        → getCategoryBySlug
-GET    /api/v1/products                → listProducts (with filters, sort, pagination)
-GET    /api/v1/products/:slug          → getProductBySlug
-GET    /api/v1/products/featured       → getFeaturedProducts
-GET    /api/v1/products/search         → searchProducts (full-text)
-```
+#### 1. Core Setup
+- `melina_bakes_client/lib/main.dart` — App entry with ProviderScope
+- `melina_bakes_client/lib/src/core/theme/` — Material 3 theme (light + dark)
+- `melina_bakes_client/lib/src/core/router/` — GoRouter with route guards
+- `melina_bakes_client/lib/src/core/network/` — Dio client with interceptors
+- `melina_bakes_client/lib/src/core/di/` — Riverpod providers
 
-#### 2. Cart Endpoints
-```
-GET    /api/v1/cart                    → getCart
-POST   /api/v1/cart/items              → addToCart
-PUT    /api/v1/cart/items/:id          → updateCartItem
-DELETE /api/v1/cart/items/:id          → removeFromCart
-POST   /api/v1/cart/apply-coupon       → applyCoupon
-POST   /api/v1/cart/remove-coupon      → removeCoupon
-```
+#### 2. Theme System
+- `app_theme.dart` — ThemeData for light/dark modes
+- `app_colors.dart` — Bakery color palette (Amber, Cream, Chocolate)
+- `app_typography.dart` — Google Fonts setup
+- `theme_provider.dart` — Theme mode state management
 
-#### 3. Order Endpoints
-```
-POST   /api/v1/orders                  → createOrder
-GET    /api/v1/orders                  → listOrders
-GET    /api/v1/orders/:number          → getOrderByNumber
-GET    /api/v1/orders/:number/track    → trackOrder
-POST   /api/v1/orders/:id/cancel       → cancelOrder
-```
+#### 3. Router
+- `app_router.dart` — GoRouter configuration
+- Route definitions for all screens
+- Auth guards (redirect to login if not authenticated)
+- Role-based route access
 
-#### 4. Payment Endpoints (Architecture Only)
-```
-POST   /api/v1/payments/intent         → createPaymentIntent
-POST   /api/v1/payments/confirm        → confirmPayment
-POST   /api/v1/payments/webhook        → handleWebhook
-```
+#### 4. Network Layer
+- `dio_client.dart` — Dio instance with base URL, timeouts
+- `auth_interceptor.dart` — Inject JWT access token
+- `refresh_interceptor.dart` — Handle 401, refresh token
+- `error_interceptor.dart` — Global error handling
+- `logging_interceptor.dart` — Request/response logging
 
-#### 5. Customer Endpoints
-```
-GET    /api/v1/customer/profile        → getProfile
-PUT    /api/v1/customer/profile        → updateProfile
-GET    /api/v1/customer/addresses      → listAddresses
-POST   /api/v1/customer/addresses      → createAddress
-PUT    /api/v1/customer/addresses/:id  → updateAddress
-DELETE /api/v1/customer/addresses/:id  → deleteAddress
-GET    /api/v1/customer/orders         → listCustomerOrders
-GET    /api/v1/customer/wishlist       → listWishlist
-POST   /api/v1/customer/wishlist       → addToWishlist
-DELETE /api/v1/customer/wishlist/:id   → removeFromWishlist
-GET    /api/v1/customer/notifications  → listNotifications
-PUT    /api/v1/customer/notifications/:id/read → markRead
-```
-
-#### 6. Admin Endpoints
-```
-GET    /api/v1/admin/dashboard         → getDashboardStats
-GET    /api/v1/admin/orders            → listAllOrders
-PUT    /api/v1/admin/orders/:id/status → updateOrderStatus
-GET    /api/v1/admin/customers         → listCustomers
-GET    /api/v1/admin/products          → listProducts (admin)
-POST   /api/v1/admin/products          → createProduct
-PUT    /api/v1/admin/products/:id      → updateProduct
-DELETE /api/v1/admin/products/:id      → deleteProduct
-GET    /api/v1/admin/categories        → listCategories (admin)
-POST   /api/v1/admin/categories        → createCategory
-PUT    /api/v1/admin/categories/:id    → updateCategory
-DELETE /api/v1/admin/categories/:id    → deleteCategory
-GET    /api/v1/admin/inventory         → getInventory
-PUT    /api/v1/admin/inventory/:id     → updateStock
-GET    /api/v1/admin/coupons           → listCoupons
-POST   /api/v1/admin/coupons           → createCoupon
-GET    /api/v1/admin/reports           → getReports
-GET    /api/v1/admin/staff             → listStaff
-POST   /api/v1/admin/staff             → createStaff
-```
+#### 5. Shared Widgets
+- `responsive_layout.dart` — Desktop/Tablet/Mobile adaptive layouts
+- `loading_indicator.dart` — Consistent loading states
+- `error_boundary.dart` — Error catching and display
+- `app_bar.dart` — Custom app bar with bakery branding
+- `bottom_nav.dart` — Navigation for customer app
 
 ### Files to Create
-- `endpoints/bakery/bakery_endpoint.dart` — Products & Categories
-- `endpoints/cart/cart_endpoint.dart` — Cart operations
-- `endpoints/orders/orders_endpoint.dart` — Order management
-- `endpoints/payments/payments_endpoint.dart` — Payment processing
-- `endpoints/customer/customer_endpoint.dart` — Customer dashboard
-- `endpoints/admin/admin_endpoint.dart` — Admin operations
-- `repositories/product_repository_impl.dart`
-- `repositories/order_repository_impl.dart`
-- `repositories/cart_repository_impl.dart`
-- `services/payment/payment_service.dart` — Payment provider interfaces
-- `services/payment/stripe_service.dart`
-- `services/payment/flutterwave_service.dart`
-- `services/payment/paypal_service.dart`
-
----
-
-## ⏳ PHASE 5: FLUTTER FOUNDATION (PENDING)
-
-### What Needs to Be Built
-- `main.dart` — App entry point with ProviderScope
-- Material 3 theme system (light + dark modes)
-- GoRouter configuration with route guards
-- Dio client with interceptors (auth token injection, error handling)
-- Riverpod provider container setup
-- Core widgets (responsive layout, loading states, error boundaries)
-- Localization setup
+- `lib/main.dart`
+- `lib/src/core/theme/app_theme.dart`
+- `lib/src/core/theme/app_colors.dart`
+- `lib/src/core/theme/app_typography.dart`
+- `lib/src/core/theme/theme_provider.dart`
+- `lib/src/core/router/app_router.dart`
+- `lib/src/core/router/route_names.dart`
+- `lib/src/core/network/dio_client.dart`
+- `lib/src/core/network/interceptors/auth_interceptor.dart`
+- `lib/src/core/network/interceptors/refresh_interceptor.dart`
+- `lib/src/core/network/interceptors/error_interceptor.dart`
+- `lib/src/core/di/injection.dart`
+- `lib/src/shared/widgets/responsive_layout.dart`
+- `lib/src/shared/widgets/loading_indicator.dart`
+- `lib/src/shared/widgets/error_boundary.dart`
 
 ---
 
 ## ⏳ PHASE 6-10: PENDING
 
-See original project specification for full details on:
-- Phase 6: Product Catalog UI
-- Phase 7: Shopping Cart
-- Phase 8: Order Management
-- Phase 9: Admin Dashboard
-- Phase 10: Deployment & DevOps
+See original project specification for full details.
 
 ---
 
@@ -305,15 +171,15 @@ See original project specification for full details on:
 ### Owner Preferences
 - **Language:** English
 - **Code Style:** Clean Architecture, DDD, SOLID, DRY, KISS
-- **No placeholder code** — everything must compile and be production-ready
+- **No placeholder code** — everything must compile
 - **No TODOs** in code
 - **Every file** must have documentation comments
-- **Type safety** everywhere — no dynamic unless absolutely necessary
+- **Type safety** everywhere
 - **Async/await** — no raw Futures
-- **Error handling** — use Result<T,F> pattern from shared package
+- **Error handling** — use Result<T,F> pattern
 
 ### Git Workflow
-- Commits must be GPG-signed for "Verified" badge on GitHub
+- **SSH signing keys** for commits (not GPG anymore)
 - Owner: Ssenfuma Adrian <adrianssenfuma@gmail.com>
 - Use conventional commit messages with phase emojis
 - Push to: `https://github.com/SsenfumaAdrian/melina_bakes.git`
@@ -322,9 +188,7 @@ See original project specification for full details on:
 - Argon2id for passwords
 - JWT with refresh token rotation
 - Rate limiting on auth endpoints
-- CSRF protection
-- XSS prevention
-- SQL injection protection (use ORM, no raw SQL)
+- CSRF protection, XSS prevention, SQL injection protection
 - Input validation on all endpoints
 - Audit logging for sensitive operations
 
@@ -347,4 +211,4 @@ See original project specification for full details on:
 
 ---
 
-*This document ensures seamless continuity. If you are a new AI assistant reading this, start with Phase 4 (Backend APIs) immediately. Do not rebuild Phases 1-3 unless explicitly asked.*
+*This document ensures seamless continuity. If you are a new AI assistant reading this, start with Phase 5 (Flutter Foundation) immediately. Do not rebuild Phases 1-4 unless explicitly asked.*
