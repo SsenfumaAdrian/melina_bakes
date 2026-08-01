@@ -16,9 +16,9 @@
 | 1 | ✅ Complete | Architecture, Monorepo, Docker, CI/CD, Shared Package |
 | 2 | ✅ Complete | Database Design, Serverpod Models, Migrations, Repositories |
 | 3 | ✅ Complete | Authentication (Argon2id, JWT, RBAC, Email) |
-| 4 | 🔄 Next | Backend APIs (Products, Cart, Orders, Payments) |
-| 5 | ⏳ Pending | Flutter Foundation (Theme, Router, State Management) |
-| 6 | ⏳ Pending | Product Catalog (UI) |
+| 4 | ✅ Complete | Backend APIs (Products, Cart, Orders, Payments, Admin, Customer) |
+| 5 | ✅ Complete | Flutter Foundation (Theme, Router, Network, Auth UI, Home) |
+| 6 | 🔄 **Next** | Product Catalog UI (Listing, Detail, Categories, Search) |
 | 7 | ⏳ Pending | Shopping Cart |
 | 8 | ⏳ Pending | Order Management |
 | 9 | ⏳ Pending | Admin Dashboard |
@@ -50,58 +50,26 @@ Melina Bakes follows **Clean Architecture** and **Domain-Driven Design (DDD)** p
 │  Flutter Web • Material 3 • Riverpod • GoRouter • Responsive │
 ├─────────────────────────────────────────────────────────────┤
 │                      DOMAIN LAYER                            │
-│  Entities • Use Cases • Repository Contracts • Value Objects │
+│  Entities • Use Cases • Repository Contracts                 │
 ├─────────────────────────────────────────────────────────────┤
 │                      DATA LAYER                              │
-│  Repositories • Data Sources • DTOs • Models • Mappers       │
+│  Repositories • Data Sources • Models • DTOs                 │
 ├─────────────────────────────────────────────────────────────┤
-│                      INFRASTRUCTURE LAYER                    │
-│  Serverpod • PostgreSQL • Redis • Docker • K8s • CI/CD       │
+│                      PLATFORM LAYER                          │
+│  Serverpod • PostgreSQL • Dio • Secure Storage               │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-### Core Architectural Principles
-
-- **Single Responsibility**: Every class has one reason to change
-- **Dependency Inversion**: Dependencies point inward toward domain
-- **Interface Segregation**: Client-specific interfaces over general ones
-- **Repository Pattern**: Abstract data access for testability
-- **Feature-First Organization**: Code organized by business capability
 
 ---
 
 ## 🛠️ Technology Stack
 
-### Frontend
-| Technology | Purpose |
-|------------|---------|
-| Flutter Web | Cross-platform UI framework |
-| Material 3 | Modern design system |
-| Riverpod 2.0 | Reactive state management |
-| GoRouter | Declarative routing |
-| Dio | HTTP client with interceptors |
-| Freezed | Immutable data classes |
-| json_serializable | JSON serialization |
-| flutter_animate | Rich animations |
-| responsive_framework | Adaptive layouts |
-
-### Backend
-| Technology | Purpose |
-|------------|---------|
-| Serverpod 2.1 | Dart backend framework |
-| PostgreSQL 15 | Primary database |
-| JWT | Stateless authentication |
-| Argon2id | Password hashing |
-| WebSocket | Real-time updates |
-| Redis | Session caching & rate limiting |
-
-### DevOps
-| Technology | Purpose |
-|------------|---------|
-| Docker | Containerization |
-| Docker Compose | Local orchestration |
-| GitHub Actions | CI/CD pipelines |
-| Nginx | Reverse proxy & load balancing |
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Flutter Web, Material 3, Riverpod, GoRouter, Dio, Freezed |
+| **Backend** | Serverpod (Dart), PostgreSQL, JWT, Argon2id |
+| **DevOps** | Docker, Docker Compose, GitHub Actions, Nginx |
+| **Design** | Figma-ready, WCAG 2.1 AA, Responsive (Mobile/Tablet/Desktop) |
 
 ---
 
@@ -109,38 +77,34 @@ Melina Bakes follows **Clean Architecture** and **Domain-Driven Design (DDD)** p
 
 ```
 melina_bakes/
-├── melina_bakes_client/          # Flutter Web Application
+├── melina_bakes_client/          # Flutter Web application
 │   ├── lib/
-│   │   ├── src/core/             # Core utilities, theme, router, DI
-│   │   ├── src/features/         # Feature modules (auth, cart, etc.)
-│   │   └── src/shared/           # Shared widgets & models
-│   ├── assets/                   # Images, icons, fonts
-│   └── web/                      # Web-specific configurations
-│
-├── melina_bakes_server/          # Serverpod Backend
-│   ├── lib/
-│   │   ├── src/endpoints/        # API endpoint definitions
-│   │   ├── src/services/         # Business logic services
-│   │   ├── src/repositories/     # Data access layer
-│   │   ├── src/models/           # Serverpod entity models
-│   │   ├── src/middleware/       # Auth, validation, rate limiting
-│   │   ├── src/workers/          # Background job processors
-│   │   └── src/config/           # Environment configurations
-│   ├── config/                   # Serverpod YAML configurations
-│   └── migrations/               # Database migrations
-│
-├── melina_bakes_shared/          # Shared Dart Package
-│   └── lib/
-│       ├── src/models/           # Shared data models
-│       ├── src/enums/            # Shared enumerations
-│       ├── src/constants/        # Shared constants
-│       └── src/utils/            # Shared utilities
-│
-├── docker/                       # Docker configurations
-├── infrastructure/               # Terraform & K8s manifests
-├── scripts/                      # Build & deployment scripts
-├── docs/                         # Architecture & API documentation
-└── .github/workflows/            # CI/CD pipeline definitions
+│   │   ├── src/
+│   │   │   ├── core/             # Theme, Router, Network, DI
+│   │   │   ├── features/         # Auth, Home, Products, Cart, Orders, Admin
+│   │   │   └── shared/           # Reusable widgets, utilities
+│   │   └── main.dart
+│   └── pubspec.yaml
+├── melina_bakes_server/          # Serverpod backend API
+│   ├── lib/src/
+│   │   ├── endpoints/            # REST API endpoints
+│   │   ├── services/             # Business logic (Auth, Payment, Email)
+│   │   ├── repositories/         # Data access layer
+│   │   ├── middleware/           # Auth middleware, RBAC
+│   │   ├── generated/            # Serverpod ORM models
+│   │   └── protocol/             # YAML model definitions
+│   ├── migrations/               # PostgreSQL schema migrations
+│   └── pubspec.yaml
+├── melina_bakes_shared/          # Shared enums, constants, utilities
+│   └── lib/src/
+│       ├── enums/                # UserRole, OrderStatus, PaymentStatus, etc.
+│       ├── constants/            # API constants, storage keys
+│       ├── models/               # PaginatedResponse
+│       └── utils/                # Result<T,F>, Validators, Extensions
+├── docker/                       # Docker & Nginx configurations
+├── .github/workflows/            # CI/CD pipelines
+├── docs/                         # Architecture Decision Records
+└── scripts/                      # Automation scripts
 ```
 
 ---
@@ -153,29 +117,32 @@ melina_bakes/
 - Flutter SDK >= 3.24.0
 - Docker & Docker Compose
 - PostgreSQL 15+
-- Redis 7+
 
-### Local Development Setup
+### Clone & Setup
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/SsenfumaAdrian/melina_bakes.git
 cd melina_bakes
 
-# 2. Start infrastructure services
+# Start infrastructure
 docker-compose -f docker/docker-compose.dev.yml up -d
 
-# 3. Install dependencies
-melos bootstrap
+# Install dependencies
+cd melina_bakes_server && dart pub get
+cd ../melina_bakes_client && flutter pub get
+cd ../melina_bakes_shared && dart pub get
+```
 
-# 4. Run database migrations
+### Run the Server
+
+```bash
 cd melina_bakes_server
-dart bin/main.dart --apply-migrations
-
-# 5. Start the server
 dart bin/main.dart
+```
 
-# 6. In a new terminal, start the client
+### Run the Client
+
+```bash
 cd melina_bakes_client
 flutter run -d chrome
 ```
@@ -184,32 +151,72 @@ flutter run -d chrome
 
 ## 📅 Development Phases
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 1 | Architecture & Foundation | ✅ Complete |
-| 2 | Database Design & Models | ✅ Complete |
-| 3 | Authentication System | ✅ Complete |
-| 4 | Backend APIs | 🔄 Next |
-| 5 | Flutter Foundation | ⏳ Pending |
-| 6 | Product Catalog | ⏳ Pending |
-| 7 | Shopping Cart | ⏳ Pending |
-| 8 | Order Management | ⏳ Pending |
-| 9 | Admin Dashboard | ⏳ Pending |
-| 10 | Deployment & DevOps | ⏳ Pending |
+### ✅ Phase 1 — Architecture & Foundation
+- Monorepo structure with `melos`
+- Docker Compose (dev + prod)
+- GitHub Actions CI/CD
+- Shared package with enums, constants, Result type
+- Architecture Decision Records (ADRs)
+
+### ✅ Phase 2 — Database Design
+- 28 Serverpod protocol YAML files
+- 25 PostgreSQL tables with indexes, FKs, constraints
+- Generated Dart models (User, Product, Order, Category)
+- Database views for analytics
+
+### ✅ Phase 3 — Authentication
+- Password hashing (Argon2id)
+- JWT service (HS256) with refresh tokens
+- Auth middleware with RBAC
+- Email service with HTML templates
+- Account lockout, email verification
+
+### ✅ Phase 4 — Backend APIs
+- **Bakery**: Categories, Products, Search, Filters
+- **Cart**: Add, Update, Remove, Coupons
+- **Orders**: Create, Track, History, Status updates
+- **Payments**: Stripe, Flutterwave, PayPal, Mobile Money architecture
+- **Customer**: Profile, Addresses, Wishlist, Notifications
+- **Admin**: Dashboard, Orders, Products, Inventory, Reports, Staff
+
+### ✅ Phase 5 — Flutter Foundation
+- Material 3 theme (light + dark modes)
+- Google Fonts (Playfair Display + Inter)
+- GoRouter with auth guards & role-based access
+- Dio network layer with 4 interceptors
+- Secure storage for tokens
+- Auth feature: Login, Register, Logout, Token refresh
+- Home screen: Hero banner, categories, featured products
+- Responsive shell: NavigationRail (desktop) / BottomNav (mobile)
+
+### 🔄 Phase 6 — Product Catalog UI *(In Progress)*
+- Product grid/list with filters
+- Product detail with image gallery
+- Category browsing
+- Search with suggestions
+
+### ⏳ Phase 7 — Shopping Cart
+### ⏳ Phase 8 — Order Management
+### ⏳ Phase 9 — Admin Dashboard
+### ⏳ Phase 10 — Deployment & DevOps
 
 ---
 
 ## 🤝 Contributing
 
-Please read our [Contributing Guide](docs/CONTRIBUTING.md) before submitting PRs.
+This project is being built iteratively with AI assistance. Each phase is committed with detailed messages and signed commits.
+
+**Commit Signing:** This repository uses SSH commit signing. See [GitHub Docs](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) for setup instructions.
 
 ---
 
 ## 📄 License
 
-Proprietary - Melina Bakes Enterprise Platform. All rights reserved.
+MIT License — See [LICENSE](LICENSE) for details.
 
 ---
 
-**Owner:** Ssenfuma Adrian <adrianssenfuma@gmail.com>  
-**Repository:** https://github.com/SsenfumaAdrian/melina_bakes.git
+<p align="center">
+  <strong>🧁 Melina Bakes</strong> — Crafted with love in Dart<br>
+  <em>Built by Ssenfuma Adrian</em>
+</p>
