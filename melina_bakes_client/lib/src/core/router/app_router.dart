@@ -11,6 +11,11 @@ import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/home/presentation/screens/shell_screen.dart';
+import '../../features/products/presentation/screens/product_list_screen.dart';
+import '../../features/products/presentation/screens/product_detail_screen.dart';
+import '../../features/products/presentation/screens/category_list_screen.dart';
+import '../../features/products/presentation/screens/category_detail_screen.dart';
+import '../../features/products/presentation/screens/search_screen.dart';
 import 'route_names.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -28,9 +33,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __, child) => ShellScreen(child: child),
         routes: [
           GoRoute(path: RouteNames.home, builder: (_, __) => const HomeScreen()),
-          GoRoute(path: RouteNames.products, builder: (_, __) => const Placeholder(key: ValueKey('products'))),
-          GoRoute(path: RouteNames.productDetail, builder: (_, __) => const Placeholder(key: ValueKey('product-detail'))),
-          GoRoute(path: RouteNames.categories, builder: (_, __) => const Placeholder(key: ValueKey('categories'))),
+          GoRoute(path: RouteNames.products, builder: (_, __) => const ProductListScreen()),
+          GoRoute(path: RouteNames.productDetail, builder: (context, state) => ProductDetailScreen(slug: state.pathParameters['slug']!)),
+          GoRoute(path: RouteNames.categories, builder: (_, __) => const CategoryListScreen()),
+          GoRoute(path: RouteNames.categoryDetail, builder: (context, state) => CategoryDetailScreen(slug: state.pathParameters['slug']!)),
+          GoRoute(path: '/search', builder: (_, __) => const SearchScreen()),
           GoRoute(path: RouteNames.cart, builder: (_, __) => const Placeholder(key: ValueKey('cart'))),
           GoRoute(path: RouteNames.checkout, builder: (_, __) => const Placeholder(key: ValueKey('checkout')), redirect: (_, s) => _requireAuth(ref, s)),
           GoRoute(path: RouteNames.orders, builder: (_, __) => const Placeholder(key: ValueKey('orders')), redirect: (_, s) => _requireAuth(ref, s)),
@@ -65,10 +72,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 String? _handleRedirect(ProviderRef<GoRouter> ref, AuthState auth, GoRouterState state) {
   final isAuth = auth is AuthenticatedAuthState;
   final isAuthRoute = state.matchedLocation == RouteNames.login || state.matchedLocation == RouteNames.register;
-
-  if (!isAuth && !isAuthRoute && state.matchedLocation.startsWith('/admin')) {
-    return RouteNames.login;
-  }
+  if (!isAuth && !isAuthRoute && state.matchedLocation.startsWith('/admin')) return RouteNames.login;
   if (isAuth && isAuthRoute) {
     final user = (auth as AuthenticatedAuthState).user;
     if (user.role.hasPermission(UserRole.manager)) return RouteNames.adminDashboard;

@@ -18,8 +18,8 @@
 | 3 | ✅ Complete | Authentication (Argon2id, JWT, RBAC, Email) |
 | 4 | ✅ Complete | Backend APIs (Products, Cart, Orders, Payments, Admin, Customer) |
 | 5 | ✅ Complete | Flutter Foundation (Theme, Router, Network, Auth UI, Home) |
-| 6 | 🔄 **Next** | Product Catalog UI (Listing, Detail, Categories, Search) |
-| 7 | ⏳ Pending | Shopping Cart |
+| 6 | ✅ Complete | Product Catalog UI (Listing, Detail, Categories, Search) |
+| 7 | 🔄 **Next** | Shopping Cart |
 | 8 | ⏳ Pending | Order Management |
 | 9 | ⏳ Pending | Admin Dashboard |
 | 10 | ⏳ Pending | Deployment & DevOps |
@@ -189,13 +189,14 @@ flutter run -d chrome
 - Home screen: Hero banner, categories, featured products
 - Responsive shell: NavigationRail (desktop) / BottomNav (mobile)
 
-### 🔄 Phase 6 — Product Catalog UI *(In Progress)*
-- Product grid/list with filters
-- Product detail with image gallery
-- Category browsing
-- Search with suggestions
+### ✅ Phase 6 — Product Catalog UI
+- **Product Listing**: Grid layout, search, category filters, price sort, infinite scroll
+- **Product Detail**: Image gallery, price, description, allergens, ingredients, quantity selector, related products
+- **Categories**: Grid browsing, category detail with product grid
+- **Search**: Debounced suggestions, results grid, empty states
+- **Product Card**: Sale badges, ratings, quick-add button
 
-### ⏳ Phase 7 — Shopping Cart
+### 🔄 Phase 7 — Shopping Cart *(In Progress)*
 ### ⏳ Phase 8 — Order Management
 ### ⏳ Phase 9 — Admin Dashboard
 ### ⏳ Phase 10 — Deployment & DevOps
