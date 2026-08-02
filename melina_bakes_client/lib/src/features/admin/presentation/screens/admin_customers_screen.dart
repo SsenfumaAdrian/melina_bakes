@@ -89,8 +89,7 @@ class _CustomerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final initials = ((item.firstName?.isNotEmpty ?? false) ? item.firstName![0] : '') +
-        ((item.lastName?.isNotEmpty ?? false) ? item.lastName![0] : '');
+    final initials = item.initials;
     final displayName = [item.firstName, item.lastName]
         .whereType<String>()
         .where((s) => s.trim().isNotEmpty)

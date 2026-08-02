@@ -66,7 +66,7 @@ class _StaffCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final initials = '${item.firstName[0]}${item.lastName[0]}';
+    final initials = item.initials;
     return Card(
       margin: EdgeInsets.zero,
       child: ListTile(
