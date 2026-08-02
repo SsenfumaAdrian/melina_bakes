@@ -20,7 +20,7 @@
 | 5 | ✅ Complete | Flutter Foundation (Theme, Router, Network, Auth UI, Home) |
 | 6 | ✅ Complete | Product Catalog UI (Listing, Detail, Categories, Search) |
 | 7 | ✅ Complete | Shopping Cart (Add, Update, Remove, Coupon, Checkout) |
-| 8 | 🔄 **Next** | Order Management |
+| 8 | ✅ Complete | Order Management (List, Detail, Tracking, Cancel, Checkout) |
 | 9 | ⏳ Pending | Admin Dashboard |
 | 10 | ⏳ Pending | Deployment & DevOps |
 
@@ -205,8 +205,19 @@ flutter run -d chrome
 - **Cart Badge**: Live item count on navigation
 - **Coupon**: Apply / remove coupon support
 
-### 🔄 Phase 8 — Order Management *(In Progress)*
-### ⏳ Phase 9 — Admin Dashboard
+### ✅ Phase 8 — Order Management
+- **Order Domain**: OrderEntity, OrderItemEntity, OrderListItemEntity, OrderTrackingEntity, OrderCancellationEntity, OrderAddressEntity, OrderStatusEventEntity
+- **Order Data**: Remote datasource, repository, JSON models mirroring the server contract
+- **Order Providers**: Paginated list with status filter, family providers for detail/tracking, mutation controller for create/cancel
+- **Checkout Screen**: Delivery address form, delivery method selection, order notes, place order flow
+- **Orders List**: Paginated history, status filter chips, infinite scroll, pull-to-refresh, tap to detail
+- **Order Detail**: Items, pricing summary, delivery address, customer notes, status timeline, cancel action
+- **Order Tracking**: Live status, progress bar, estimated times, lifecycle timeline
+- **Order Success**: Post-checkout confirmation with order number, estimated delivery, navigation actions
+- **Widgets**: OrderStatusBadge, OrderTimeline, OrderStatusChip
+- **Bug Fixes**: Fixed pre-existing `extensions.dart` interpolation bug, `cart_screen` import and coupon-remove button
+
+### 🔄 Phase 9 — Admin Dashboard *(Next)*
 ### ⏳ Phase 10 — Deployment & DevOps
 
 ---

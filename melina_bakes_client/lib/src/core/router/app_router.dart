@@ -17,6 +17,11 @@ import '../../features/products/presentation/screens/category_list_screen.dart';
 import '../../features/products/presentation/screens/category_detail_screen.dart';
 import '../../features/products/presentation/screens/search_screen.dart';
 import '../../features/cart/presentation/screens/cart_screen.dart';
+import '../../features/orders/presentation/screens/checkout_screen.dart';
+import '../../features/orders/presentation/screens/order_detail_screen.dart';
+import '../../features/orders/presentation/screens/order_success_screen.dart';
+import '../../features/orders/presentation/screens/order_tracking_screen.dart';
+import '../../features/orders/presentation/screens/orders_screen.dart';
 import 'route_names.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -40,9 +45,37 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: RouteNames.categoryDetail, builder: (context, state) => CategoryDetailScreen(slug: state.pathParameters['slug']!)),
           GoRoute(path: '/search', builder: (_, __) => const SearchScreen()),
           GoRoute(path: RouteNames.cart, builder: (_, __) => const CartScreen()),
-          GoRoute(path: RouteNames.checkout, builder: (_, __) => const Placeholder(key: ValueKey('checkout')), redirect: (_, s) => _requireAuth(ref, s)),
-          GoRoute(path: RouteNames.orders, builder: (_, __) => const Placeholder(key: ValueKey('orders')), redirect: (_, s) => _requireAuth(ref, s)),
-          GoRoute(path: RouteNames.orderDetail, builder: (_, __) => const Placeholder(key: ValueKey('order-detail')), redirect: (_, s) => _requireAuth(ref, s)),
+          GoRoute(
+            path: RouteNames.checkout,
+            builder: (_, __) => const CheckoutScreen(),
+            redirect: (_, s) => _requireAuth(ref, s),
+          ),
+          GoRoute(
+            path: RouteNames.orderSuccess,
+            builder: (_, __) => const OrderSuccessScreen(),
+            redirect: (_, s) => _requireAuth(ref, s),
+          ),
+          GoRoute(
+            path: RouteNames.orders,
+            builder: (_, __) => const OrdersScreen(),
+            redirect: (_, s) => _requireAuth(ref, s),
+            routes: [
+              GoRoute(
+                path: ':number',
+                builder: (_, state) => OrderDetailScreen(
+                  orderNumber: state.pathParameters['number']!,
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'track',
+                    builder: (_, state) => OrderTrackingScreen(
+                      orderNumber: state.pathParameters['number']!,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           GoRoute(path: RouteNames.profile, builder: (_, __) => const Placeholder(key: ValueKey('profile')), redirect: (_, s) => _requireAuth(ref, s)),
           GoRoute(path: RouteNames.wishlist, builder: (_, __) => const Placeholder(key: ValueKey('wishlist')), redirect: (_, s) => _requireAuth(ref, s)),
           GoRoute(path: RouteNames.notifications, builder: (_, __) => const Placeholder(key: ValueKey('notifications')), redirect: (_, s) => _requireAuth(ref, s)),

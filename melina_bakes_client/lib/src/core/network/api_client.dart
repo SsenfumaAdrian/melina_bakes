@@ -3,12 +3,9 @@
 library;
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../errors/exceptions.dart';
 import 'dio_client.dart';
-
-final apiClientProvider = Provider<ApiClient>((ref) => ApiClient(ref.watch(dioProvider)));
 
 class ApiResponse<T> {
   final bool success;

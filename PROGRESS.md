@@ -5,7 +5,7 @@
 > 
 > **Owner:** Ssenfuma Adrian <adrianssenfuma@gmail.com>  
 > **Repo:** https://github.com/SsenfumaAdrian/melina_bakes.git  
-> **Last Updated:** 2026-08-01
+> **Last Updated:** 2026-08-02
 
 ---
 
@@ -20,8 +20,8 @@
 | 5 | Flutter Foundation | ✅ Complete | `8a6ec0d` | 2026-08-01 |
 | 6 | Product Catalog UI | ✅ Complete | `499b616` | 2026-08-01 |
 | 7 | Shopping Cart | ✅ Complete | `94b83af` | 2026-08-01 |
-| 8 | Order Management | 🔄 **NEXT** | — | — |
-| 9 | Admin Dashboard | ⏳ Pending | — | — |
+| 8 | Order Management | ✅ Complete | — | 2026-08-02 |
+| 9 | Admin Dashboard | 🔄 **NEXT** | — | — |
 | 10 | Deployment & DevOps | ⏳ Pending | — | — |
 
 ---
@@ -361,40 +361,105 @@
 
 ---
 
-## 🔄 PHASE 8: ORDER MANAGEMENT (NEXT — BUILD THIS NOW)
+## ✅ PHASE 8: ORDER MANAGEMENT
 
-### What Needs to Be Built
+**Commit:** — `📦 feat(orders): Phase 8 — Order Management complete`
 
-#### 1. Order Domain Layer
-- `OrderEntity` — Order with items, status, totals, tracking number, timestamps
-- `OrderItemEntity` — Product snapshot in order (price locked at purchase)
-- `OrderRepository` — Create, list, get by number, track, cancel
+### What Was Built
 
-#### 2. Order Data Layer
-- `OrderModel` / `OrderItemModel`
-- `OrderRemoteDataSource`
-- `OrderRepositoryImpl`
+#### Order Domain Layer (7 files)
+- `OrderEntity` — Full order with items, status, totals, delivery address, status history, timestamps; helpers `isActive`, `canCancel`, `hasCoupon`, `isDelivered`, `latestEvent`, `itemCount`
+- `OrderItemEntity` — Product snapshot in order (price locked at purchase) with `hasSpecialInstructions`
+- `OrderListItemEntity` — Lightweight row for the orders history list
+- `OrderTrackingEntity` — Live tracking with timeline, `progress`, `completedCount`
+- `OrderCancellationEntity` — Cancellation outcome with refund details
+- `OrderAddressEntity` — Delivery address snapshot with `displayLine`
+- `OrderStatusEventEntity` — Single timeline step with `displayLabel`
+- `OrderRepository` — Contract: listOrders, getOrderByNumber, trackOrder, createOrder, cancelOrder
 
-#### 3. Order Presentation Layer
-- `OrderProvider` — Riverpod state management
-- `OrdersScreen` — Order history list with status badges
-- `OrderDetailScreen` — Full order details, items, timeline
-- `OrderTrackingScreen` — Live status tracking with visual timeline
-- `OrderSuccessScreen` — Post-checkout confirmation
+#### Order Data Layer (7 files)
+- `OrderItemModel` / `OrderListItemModel` / `OrderAddressModel` / `OrderStatusEventModel` / `OrderModel` / `OrderTrackingModel` / `OrderCancellationModel`
+- Safe enum parsing (`OrderStatus.values.byName` with fallback) so the UI degrades gracefully on unknown server values
+- `OrderRemoteDataSource` — Maps the server `OrdersEndpoint` contract (list, detail, track, create, cancel)
+- `OrderRepositoryImpl` — Bridges datasource to domain, mapping exceptions to `Failure`
 
-### Order Status Flow
+#### Order Presentation Layer (3 files)
+- `OrderProvider` — Riverpod providers:
+  - `ordersProvider` (StateNotifier): paginated list with status filter, infinite scroll, refresh
+  - `orderDetailProvider` (FutureProvider.family): single order by number
+  - `orderTrackingProvider` (FutureProvider.family): live tracking by number
+  - `orderMutationProvider` (StateNotifier): create / cancel with state machine (Idle/Loading/Created/Cancelled/Failure); auto-invalidates list & cart
+- `OrderMutationState` sealed class with 5 variants
+
+#### Screens (5 files)
+- `OrdersScreen` — Order history list:
+  - Status filter chip bar (All + 8 statuses)
+  - Pull-to-refresh
+  - Infinite scroll pagination
+  - Responsive order cards (number, status, item count, time ago, total, chevron)
+  - Empty / loading / error states
+- `OrderDetailScreen` — Full order page:
+  - Status card with cancel button (for cancellable orders)
+  - Estimated delivery banner
+  - Items list with images, unit price × quantity, line totals
+  - Pricing summary (subtotal, discount, tax, delivery, total)
+  - Delivery address card
+  - Customer notes card
+  - Status timeline with `OrderTimeline` widget
+  - Track action in app bar
+- `OrderTrackingScreen` — Live tracking:
+  - Progress bar (0-100%) with status-colored fill
+  - Current status badge
+  - Estimated times card (preparation ready, delivery)
+  - Visual lifecycle timeline with completed/pending stages
+- `OrderSuccessScreen` — Post-checkout confirmation:
+  - Success animation/icon
+  - Order number + estimated delivery
+  - View Order / Continue Shopping actions
+- `CheckoutScreen` — Checkout flow:
+  - Delivery address form (street, city, state, postal) with validation
+  - Delivery method radio tiles (Standard / Express / Pickup)
+  - Optional order notes
+  - Mutation error banner
+  - Sticky bottom bar with total + Place Order button (with loading state)
+  - Redirects to success screen on order creation via `ref.listen`
+
+#### Order Widgets (3 files)
+- `OrderStatusBadge` — Pill badge with icon + colored background per status; 8 exhaustive status colors
+- `OrderStatusChip` — Lightweight chip with static `colorFor(OrderStatus)` accessor (canonical color source)
+- `OrderTimeline` — Vertical stepper timeline with completed/pending indicators, connectors, timestamps, and notes
+
+#### Integration
+- Router updated with nested `/orders`, `/orders/:number`, `/orders/:number/track`, `/checkout`, `/order-success` routes (all auth-guarded)
+- Order barrel export `orders.dart` exposes every public surface
+- Shell screen Orders tab now routes to the real OrdersScreen (was a Placeholder)
+
+#### Bug Fixes (Pre-existing)
+- `melina_bakes_shared/lib/src/utils/extensions.dart` — `timeAgo` had escaped `$` signs (`\$`) breaking string interpolation; fixed to proper `$` interpolation
+- `melina_bakes_client/lib/src/core/network/api_client.dart` — Removed duplicate `apiClientProvider` definition (caused `ambiguous_export` via `core.dart`); canonical provider lives in `core/di/injection.dart`
+- `melina_bakes_client/lib/src/features/cart/presentation/screens/cart_screen.dart` — Fixed wrong import `error_state.dart` (doesn't exist) → `error_boundary.dart` (where `ErrorStateWidget` lives)
+- `melina_bakes_client/lib/src/features/cart/presentation/screens/cart_screen.dart` — Fixed broken "Remove coupon" button: `_CartSummary` converted from `StatelessWidget` to `ConsumerWidget` so it can call `ref.read(cartControllerProvider.notifier).removeCoupon()`
+
+### Files Created: 24 new Dart files in `features/orders/`
+### Bug Fixes: 4 pre-existing bugs corrected in shared/client
+
+### Order Status Flow (Implemented)
 ```
-Pending → Preparing → Baking → Ready → Out for Delivery → Completed
-   ↓
-Cancelled
+Pending → Confirmed → Preparing → Baking → Ready → Out for Delivery → Completed
+                                                                ↓
+                                                           Cancelled (only from Pending/Confirmed)
 ```
 
-### Files to Create
-- `lib/src/features/orders/` — Feature folder
+### Key Decisions
+- **Family providers** for order detail and tracking keyed by `orderNumber` (string) — enables efficient caching and invalidation per order
+- **State machine for mutations** — `OrderMutationState` sealed class forces the UI to handle idle/loading/created/cancelled/failure explicitly
+- **Safe enum parsing** — Unknown server enum values fall back to `OrderStatus.pending` instead of crashing
+- **Nested GoRouter routes** — `/orders/:number/track` lives as a child of `/orders/:number`, preserving back-stack semantics
+- **Cart invalidation on order creation** — Creating an order invalidates both `ordersProvider` and `cartProvider` so both refetch fresh data
 
 ---
 
-## ⏳ PHASE 9: ADMIN DASHBOARD (PENDING)
+## 🔄 PHASE 9: ADMIN DASHBOARD (NEXT — BUILD THIS NEXT)
 
 ### Planned Features
 - Analytics dashboard with charts
@@ -464,4 +529,4 @@ Cancelled
 
 ---
 
-*This document is the single source of truth for the entire project history. If you are a new AI assistant reading this, start with Phase 8 (Order Management) immediately. Do not rebuild Phases 1-7 unless explicitly asked.*
+*This document is the single source of truth for the entire project history. If you are a new AI assistant reading this, start with Phase 9 (Admin Dashboard) immediately. Do not rebuild Phases 1-8 unless explicitly asked.*

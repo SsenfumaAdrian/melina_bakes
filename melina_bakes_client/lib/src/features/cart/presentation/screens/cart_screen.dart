@@ -10,7 +10,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
-import '../../../../shared/widgets/error_state.dart';
+import '../../../../shared/widgets/error_boundary.dart';
 import '../../../../shared/widgets/empty_state.dart';
 import '../../domain/entities/cart_entity.dart';
 import '../../domain/entities/cart_item_entity.dart';
@@ -219,13 +219,13 @@ class _QuantityButton extends StatelessWidget {
   }
 }
 
-class _CartSummary extends StatelessWidget {
+class _CartSummary extends ConsumerWidget {
   final CartEntity cart;
 
   const _CartSummary({required this.cart});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Container(
@@ -264,9 +264,8 @@ class _CartSummary extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.read<CartController>()
-                          // This won't work directly, but the provider handles it
-                          , // Handled by parent
+                      onPressed: () =>
+                          ref.read(cartControllerProvider.notifier).removeCoupon(),
                       child: const Text('Remove'),
                     ),
                   ],
