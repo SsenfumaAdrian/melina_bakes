@@ -21,10 +21,11 @@ class RefreshInterceptor extends Interceptor {
     if (original.path.startsWith('/auth')) return handler.next(err);
 
     if (_isRefreshing) {
-      _pending.add(() {
+      _pending.add(() async {
         final t = _dio.options.headers['Authorization'] as String?;
         original.headers['Authorization'] = t;
-        handler.resolve(_dio.fetch(original));
+        final res = await _dio.fetch(original);
+        handler.resolve(res);
       });
       return;
     }

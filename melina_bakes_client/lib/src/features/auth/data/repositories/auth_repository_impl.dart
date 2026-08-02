@@ -4,6 +4,7 @@
 library;
 
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
+import '../../../../core/errors/failures.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasource.dart';

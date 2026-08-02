@@ -2,6 +2,7 @@
 /// Material 3 theme configuration for Melina Bakes.
 library;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'app_colors.dart';
@@ -144,7 +145,7 @@ AppBarTheme _appBarTheme(ColorScheme cs) => AppBarTheme(
   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
 );
 
-CardTheme _cardTheme() => CardTheme(
+CardThemeData _cardTheme() => CardThemeData(
   elevation: 0,
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: AppColors.border)),
   clipBehavior: Clip.antiAlias, margin: const EdgeInsets.all(0),
@@ -229,7 +230,7 @@ SnackBarThemeData _snackBar(ColorScheme cs) => SnackBarThemeData(
   actionTextColor: cs.primary, backgroundColor: cs.inverseSurface,
 );
 
-DialogTheme _dialog() => DialogTheme(
+DialogThemeData _dialog() => DialogThemeData(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), elevation: 4,
 );
 

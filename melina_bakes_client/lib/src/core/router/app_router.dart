@@ -22,6 +22,14 @@ import '../../features/orders/presentation/screens/order_detail_screen.dart';
 import '../../features/orders/presentation/screens/order_success_screen.dart';
 import '../../features/orders/presentation/screens/order_tracking_screen.dart';
 import '../../features/orders/presentation/screens/orders_screen.dart';
+import '../../features/admin/presentation/screens/admin_dashboard_screen.dart';
+import '../../features/admin/presentation/screens/admin_orders_screen.dart';
+import '../../features/admin/presentation/screens/admin_products_screen.dart';
+import '../../features/admin/presentation/screens/admin_customers_screen.dart';
+import '../../features/admin/presentation/screens/admin_inventory_screen.dart';
+import '../../features/admin/presentation/screens/admin_reports_screen.dart';
+import '../../features/admin/presentation/screens/admin_staff_screen.dart';
+import '../../features/admin/presentation/screens/admin_coupons_screen.dart';
 import 'route_names.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -86,15 +94,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         builder: (_, __, child) => ShellScreen(child: child, isAdmin: true),
         routes: [
-          GoRoute(path: RouteNames.adminDashboard, builder: (_, __) => const Placeholder(key: ValueKey('admin-dashboard')), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
-          GoRoute(path: RouteNames.adminOrders, builder: (_, __) => const Placeholder(key: ValueKey('admin-orders')), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
-          GoRoute(path: RouteNames.adminProducts, builder: (_, __) => const Placeholder(key: ValueKey('admin-products')), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
+          GoRoute(path: RouteNames.adminDashboard, builder: (_, __) => const AdminDashboardScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
+          GoRoute(path: RouteNames.adminOrders, builder: (_, __) => const AdminOrdersScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
+          GoRoute(path: RouteNames.adminProducts, builder: (_, __) => const AdminProductsScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
           GoRoute(path: RouteNames.adminCategories, builder: (_, __) => const Placeholder(key: ValueKey('admin-categories')), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
-          GoRoute(path: RouteNames.adminCustomers, builder: (_, __) => const Placeholder(key: ValueKey('admin-customers')), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
-          GoRoute(path: RouteNames.adminInventory, builder: (_, __) => const Placeholder(key: ValueKey('admin-inventory')), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
-          GoRoute(path: RouteNames.adminReports, builder: (_, __) => const Placeholder(key: ValueKey('admin-reports')), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
-          GoRoute(path: RouteNames.adminStaff, builder: (_, __) => const Placeholder(key: ValueKey('admin-staff')), redirect: (_, s) => _requireRole(ref, s, UserRole.admin)),
-          GoRoute(path: RouteNames.adminCoupons, builder: (_, __) => const Placeholder(key: ValueKey('admin-coupons')), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
+          GoRoute(path: RouteNames.adminCustomers, builder: (_, __) => const AdminCustomersScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
+          GoRoute(path: RouteNames.adminInventory, builder: (_, __) => const AdminInventoryScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.staff)),
+          GoRoute(path: RouteNames.adminReports, builder: (_, __) => const AdminReportsScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
+          GoRoute(path: RouteNames.adminStaff, builder: (_, __) => const AdminStaffScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.admin)),
+          GoRoute(path: RouteNames.adminCoupons, builder: (_, __) => const AdminCouponsScreen(), redirect: (_, s) => _requireRole(ref, s, UserRole.manager)),
           GoRoute(path: RouteNames.adminSettings, builder: (_, __) => const Placeholder(key: ValueKey('admin-settings')), redirect: (_, s) => _requireRole(ref, s, UserRole.admin)),
         ],
       ),

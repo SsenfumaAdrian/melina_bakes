@@ -9,6 +9,7 @@ import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../cart/presentation/widgets/cart_badge.dart';
 
@@ -152,4 +153,7 @@ const List<_NavRoute> _adminRoutes = [
   _NavRoute(path: RouteNames.adminProducts, label: 'Products', icon: Icons.cake_outlined, selectedIcon: Icons.cake),
   _NavRoute(path: RouteNames.adminCustomers, label: 'Customers', icon: Icons.people_outline, selectedIcon: Icons.people),
   _NavRoute(path: RouteNames.adminInventory, label: 'Inventory', icon: Icons.inventory_2_outlined, selectedIcon: Icons.inventory_2),
+  _NavRoute(path: RouteNames.adminReports, label: 'Reports', icon: Icons.bar_chart_outlined, selectedIcon: Icons.bar_chart),
+  _NavRoute(path: RouteNames.adminStaff, label: 'Staff', icon: Icons.badge_outlined, selectedIcon: Icons.badge),
+  _NavRoute(path: RouteNames.adminCoupons, label: 'Coupons', icon: Icons.confirmation_number_outlined, selectedIcon: Icons.confirmation_number),
 ];

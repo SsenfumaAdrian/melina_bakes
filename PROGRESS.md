@@ -5,7 +5,7 @@
 > 
 > **Owner:** Ssenfuma Adrian <adrianssenfuma@gmail.com>  
 > **Repo:** https://github.com/SsenfumaAdrian/melina_bakes.git  
-> **Last Updated:** 2026-08-02
+> **Last Updated:** 2026-08-03
 
 ---
 
@@ -459,16 +459,73 @@ Pending → Confirmed → Preparing → Baking → Ready → Out for Delivery �
 
 ---
 
-## 🔄 PHASE 9: ADMIN DASHBOARD (NEXT — BUILD THIS NEXT)
+## ✅ PHASE 9: ADMIN DASHBOARD (COMPLETED)
 
-### Planned Features
-- Analytics dashboard with charts
-- Order management table
-- Product management CRUD
-- Customer management
-- Inventory management
-- Staff management
-- Report generation (PDF, Excel)
+### Timeline
+- **Completed:** 2026-08-03
+
+### Architecture
+- **Feature-first layout:** `features/admin/` with domain, data, presentation layers
+- **Single repository contract** (`AdminRepository`) — 16 methods covering all admin operations
+- **5 StateNotifiers** for paginated lists (Orders, Customers, Products, Staff, Coupons)
+- **3 FutureProviders** for single-shot fetches (Dashboard, Inventory, Reports)
+- **8 full screens** wired to GoRouter with role-based auth guards
+
+### Domain Layer (9 files)
+| File | Description |
+|------|-------------|
+| `admin_dashboard_entity.dart` | KPI overview, period stats, status breakdown, sub-entities (`AdminTopProductEntity`, `AdminRecentOrderEntity`, `AdminLowStockAlertEntity`) |
+| `admin_order_list_item_entity.dart` | Lightweight order row for admin table |
+| `admin_customer_entity.dart` | Customer with totalOrders/totalSpent, `fullName`, `initials` |
+| `admin_product_entity.dart` | Product with costPrice, marginPercent, categoryName |
+| `inventory_ingredient_entity.dart` | Ingredient with quantity, unit, reorderLevel, status |
+| `admin_staff_entity.dart` | Staff member with role, department, position, initals |
+| `admin_coupon_entity.dart` | Coupon with type, value, usage tracking |
+| `admin_report_entity.dart` | Report summary with type, date range, totals |
+| `admin_repository.dart` | Abstract interface — dashboard, orders CRUD, customers, products CRUD, inventory, staff, coupons CRUD, reports |
+
+### Data Layer (8 models + datasource + repository impl)
+| Component | Description |
+|-----------|-------------|
+| 8 model files | `fromJson` → `toEntity()` pattern with safe enum parsing; `AdminDashboardModel` composes 2 nested view classes |
+| `AdminRemoteDataSource` | 17 API calls using `ApiClient` with paginated response parser |
+| `AdminRepositoryImpl` | Pipes all calls from the contract to the remote datasource |
+
+### Presentation Layer (9 files)
+| Component | Description |
+|-----------|-------------|
+| `admin_dashboard_screen.dart` | KPI grid, period comparison, status breakdown progress bars, top products, recent orders, low stock alerts |
+| `admin_orders_screen.dart` | Paginated list with status chip filter, search, expansion tiles with inline status updates |
+| `admin_products_screen.dart` | Filtered list with featured toggle, delete confirmation dialog |
+| `admin_customers_screen.dart` | Searchable card list with initials avatar, order/spending summary |
+| `admin_inventory_screen.dart` | Stock levels with color-coded status chips |
+| `admin_staff_screen.dart` | Paginated staff list with role/department/position chips |
+| `admin_coupons_screen.dart` | Coupon list with create dialog (inline form), delete action |
+| `admin_reports_screen.dart` | Report type dropdown, date range picker, summary card |
+| `admin_provider.dart` | Riverpod wiring — 5 controllers + 3 FutureProvider families |
+
+### Router & Shell Updates
+| File | Change |
+|------|--------|
+| `app_router.dart` | All 8 admin `Placeholder` stubs replaced with real screens; 8 admin screen imports added |
+| `shell_screen.dart` | `_adminRoutes` expanded from 5→8: Dashboard, Orders, Products, Customers, Inventory, Reports, Staff, Coupons |
+| `admin.dart` | Barrel export for all public admin types (domain, providers, screens) |
+
+### Fixed Bugs
+- `admin_coupon_entity.dart`: Constructor/props referenced undefined `discountType` → corrected to `type`
+- `admin_dashboard_entity.dart`: List fields used undefined `AdminTopProduct`/`AdminRecentOrder`/`AdminLowStockAlert` → corrected to `...Entity` suffix
+- `admin_inventory_screen.dart`: Switch only handled 3 of 4 `InventoryStatus` values → added `critical → warning` case
+
+### Files Created: 29 new Dart files in `features/admin/`
+### Bug Fixes: 3 pre-existing bugs corrected in admin entities + 1 screen
+### Total Phase 9 lines: ~2,300
+
+### Key Decisions
+- **8-item bottom navigation** (exceeds M3 recommendation of 3-5): Acceptable for admin shell — NavigationRail handles desktop well; mobile works technically. Could be refactored to a side-drawer if needed.
+- **Paginated lists** use `StateNotifier<...State>` pattern (consistent with Phase 8 orders) for infinite scroll, pull-to-refresh, search filters
+- **Single repository** (`AdminRepository`) instead of per-aggregate repositories — reduces DIproses for a feature that's typically accessed as one `unit work` (the admin dashboard)
+- **`admin_provider.dart`** -- all Riverpod wiring in one file for simplicity (future refactoring could split per-entity file)
+- **Safe enum parsing** in all models — unknown strings fall back to defaults, never crash
 
 ---
 

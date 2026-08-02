@@ -232,7 +232,7 @@ class _TimelineEntry extends StatelessWidget {
           // Label + timestamp
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: EdgeInsets.only(
                 top: index == 0 ? 0 : UIConstants.spacingSm,
                 bottom: isLast ? 0 : UIConstants.spacingMd,
               ),

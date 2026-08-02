@@ -13,7 +13,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/empty_state.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
 import '../../../../shared/widgets/error_boundary.dart';
-import '../domain/entities/order_list_item_entity.dart';
+import '../../domain/entities/order_list_item_entity.dart';
 import '../providers/order_provider.dart';
 import '../widgets/order_status_badge.dart';
 
@@ -98,10 +98,10 @@ class OrdersScreen extends ConsumerWidget {
 }
 
 class _StatusFilterBar extends StatelessWidget {
-  final OrderStatus? controller;
-  final void Function(OrderStatus? status) onFilter;
+  final OrderStatus? selected;
+  final void Function(OrderStatus? status) onChanged;
 
-  const _StatusFilterBar({required this.controller, required this.onFilter});
+  const _StatusFilterBar({required this.selected, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +117,13 @@ class _StatusFilterBar extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(width: 8),
           itemBuilder: (context, index) {
             final status = statuses[index];
-            final isSelected = controller == status;
+            final isSelected = selected == status;
             final label = status == null ? 'All' : status.displayName;
 
             return FilterChip(
               label: Text(label),
               selected: isSelected,
-              onSelected: (_) => onFilter(status),
+              onSelected: (_) => onChanged(status),
               visualDensity: VisualDensity.comfortable,
             );
           },

@@ -12,7 +12,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/loading_indicator.dart';
-import '../../cart/cart.dart';
+import '../../../cart/cart.dart';
 import '../providers/order_provider.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {

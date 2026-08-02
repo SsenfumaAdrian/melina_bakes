@@ -217,7 +217,18 @@ flutter run -d chrome
 - **Widgets**: OrderStatusBadge, OrderTimeline, OrderStatusChip
 - **Bug Fixes**: Fixed pre-existing `extensions.dart` interpolation bug, `cart_screen` import and coupon-remove button
 
-### 🔄 Phase 9 — Admin Dashboard *(Next)*
+### ✅ Phase 9 — Admin Dashboard
+- **Dashboard**: KPI cards, period comparison, status breakdown with progress bars, top products, recent orders, low stock alerts
+- **Order Management**: Paginated list, status filter, search, inline status updates via expansion tiles
+- **Product Management**: Paginated list, status filter, search, featured toggle, delete with confirmation dialog
+- **Customer Management**: Searchable card list, initials avatars, order/spending summaries
+- **Inventory Management**: Stock levels, unit tracking, reorder levels, color-coded status chips
+- **Staff Management**: Paginated role/department/position chip list
+- **Coupon Management**: List with create dialog, delete action
+- **Reports**: Report type dropdown, date range picker, revenue/orders/customers summary
+- **Shell Navigation**: 8 admin routes in bottom nav + GoRouter — Dashboard, Orders, Products, Customers, Inventory, Reports, Staff, Coupons
+- **29 files, ~2,300 lines, 8 screens, 8 Riverpod controllers**
+
 ### ⏳ Phase 10 — Deployment & DevOps
 
 ---

@@ -5,6 +5,7 @@ library;
 import 'package:dio/dio.dart';
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../errors/exceptions.dart';
+import '../errors/failures.dart';
 import 'dio_client.dart';
 
 class ApiResponse<T> {
@@ -96,6 +97,7 @@ class ApiClient {
       case DioExceptionType.cancel:
         return const NetworkFailure(message: 'Request was cancelled.');
       case DioExceptionType.unknown:
+      default:
         return NetworkFailure(message: 'Network error: ${e.message}');
     }
   }

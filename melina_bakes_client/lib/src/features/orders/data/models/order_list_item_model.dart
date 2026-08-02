@@ -2,6 +2,7 @@
 /// Data model for serializing a lightweight order list row.
 library;
 
+import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../../domain/entities/order_list_item_entity.dart';
 
 class OrderListItemModel {
