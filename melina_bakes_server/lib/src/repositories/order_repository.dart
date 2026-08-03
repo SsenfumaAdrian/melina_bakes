@@ -43,26 +43,26 @@ abstract interface class OrderRepository {
 
   /// Lists orders for a user.
   Future<Result<PaginatedResponse<Order>, Failure>> listUserOrders({
-    required int userId;
-    required int page;
-    required int pageSize;
-    OrderStatus? statusFilter;
+    required int userId,
+    required int page,
+    required int pageSize,
+    OrderStatus? statusFilter,
   });
 
   /// Lists all orders (admin).
   Future<Result<PaginatedResponse<Order>, Failure>> listAllOrders({
-    required int page;
-    required int pageSize;
-    OrderStatus? statusFilter;
-    PaymentStatus? paymentStatusFilter;
-    DateTime? dateFrom;
-    DateTime? dateTo;
-    String? searchQuery;
+    required int page,
+    required int pageSize,
+    OrderStatus? statusFilter,
+    PaymentStatus? paymentStatusFilter,
+    DateTime? dateFrom,
+    DateTime? dateTo,
+    String? searchQuery,
   });
 
   /// Gets order statistics for dashboard.
   Future<Result<Map<String, dynamic>, Failure>> getOrderStats({
-    DateTime? dateFrom;
-    DateTime? dateTo;
+    DateTime? dateFrom,
+    DateTime? dateTo,
   });
 }

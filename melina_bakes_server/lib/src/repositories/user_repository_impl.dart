@@ -1,10 +1,10 @@
 /// User Repository Implementation
 ///
 /// Serverpod ORM-based implementation of [UserRepository].
-import 'package:serverpod/serverpod.dart';
+import 'package:serverpod/serverpod.dart' hide Result;
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
-import '../../generated/user.dart';
-import '../user_repository.dart';
+import '../generated/user.dart';
+import 'user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final Session _session;

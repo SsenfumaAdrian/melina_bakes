@@ -67,10 +67,10 @@ abstract interface class UserRepository {
 
   /// Lists users with pagination and filtering.
   Future<Result<PaginatedResponse<User>, Failure>> listUsers({
-    required int page;
-    required int pageSize;
-    UserRole? roleFilter;
-    bool? isActive;
-    String? searchQuery;
+    required int page,
+    required int pageSize,
+    UserRole? roleFilter,
+    bool? isActive,
+    String? searchQuery,
   });
 }

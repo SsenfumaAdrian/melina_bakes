@@ -63,17 +63,17 @@ abstract interface class ProductRepository {
 
   /// Lists products with filtering, sorting, and pagination.
   Future<Result<PaginatedResponse<Product>, Failure>> listProducts({
-    required int page;
-    required int pageSize;
-    int? categoryId;
-    ProductStatus? status;
-    bool? isFeatured;
-    bool? isNew;
-    double? minPrice;
-    double? maxPrice;
-    String? searchQuery;
-    String? sortBy;
-    bool sortDescending = false;
+    required int page,
+    required int pageSize,
+    int? categoryId,
+    ProductStatus? status,
+    bool? isFeatured,
+    bool? isNew,
+    double? minPrice,
+    double? maxPrice,
+    String? searchQuery,
+    String? sortBy,
+    bool sortDescending = false,
   });
 
   /// Gets featured products.
@@ -106,8 +106,8 @@ abstract interface class CategoryRepository {
 
   /// Lists all active categories.
   Future<Result<List<Category>, Failure>> listCategories({
-    bool includeInactive = false;
-    int? parentId;
+    bool includeInactive = false,
+    int? parentId,
   });
 
   /// Updates a category.
