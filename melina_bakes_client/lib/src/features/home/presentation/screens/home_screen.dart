@@ -10,6 +10,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/responsive_layout.dart';
+import '../../../products/domain/entities/category_entity.dart';
 import '../../../products/presentation/providers/product_providers.dart';
 import '../../../products/presentation/widgets/product_card.dart';
 
@@ -151,7 +152,7 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _CategoryChips extends StatelessWidget {
-  final List<dynamic> categories;
+  final List<CategoryEntity> categories;
   const _CategoryChips({required this.categories});
 
   @override

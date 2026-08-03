@@ -1,7 +1,7 @@
 library;
 
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
-import '../../../core/errors/failures.dart';
+import '../../../../core/errors/failures.dart';
 import '../../domain/entities/admin_coupon_entity.dart';
 import '../../domain/entities/admin_customer_entity.dart';
 import '../../domain/entities/admin_dashboard_entity.dart';

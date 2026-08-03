@@ -29,40 +29,9 @@ abstract final class ApiConfig {
   /// Maximum number of retry attempts for failed requests.
   static const int maxRetries = 3;
 
-  /// Retry delay between failed attempts.
-  static const Duration retryDelay = Duration(seconds: 1);
+/// Retry delay between failed attempts.
+static const Duration retryDelay = Duration(seconds: 1);
 }
-
-/// Storage keys for local persistence.
-abstract final class StorageKeys {
-  StorageKeys._();
-
-  /// Key for the JWT access token in secure storage.
-  static const String accessToken = 'mb_access_token';
-
-  /// Key for the refresh token in secure storage.
-  static const String refreshToken = 'mb_refresh_token';
-
-  /// Key for the token expiry timestamp.
-  static const String tokenExpiry = 'mb_token_expiry';
-
-  /// Key for the cached user profile.
-  static const String userProfile = 'mb_user_profile';
-
-  /// Key for the theme mode preference.
-  static const String themeMode = 'mb_theme_mode';
-
-  /// Key for the locale preference.
-  static const String locale = 'mb_locale';
-
-  /// Key for onboarding completion flag.
-  static const String onboardingComplete = 'mb_onboarding_complete';
-
-  /// Key for the persistent cart (guest users).
-  static const String guestCart = 'mb_guest_cart';
-}
-
-/// UI constants and design tokens.
 abstract final class UIConstants {
   UIConstants._();
 

@@ -3,7 +3,7 @@
 library;
 
 import 'package:dio/dio.dart';
-import '../../constants/app_constants.dart';
+import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../../services/storage_service.dart';
 
 class RefreshInterceptor extends Interceptor {

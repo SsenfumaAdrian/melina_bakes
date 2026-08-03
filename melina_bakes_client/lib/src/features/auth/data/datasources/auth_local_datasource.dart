@@ -5,7 +5,7 @@
 library;
 
 import 'dart:convert';
-import '../../../../core/constants/app_constants.dart';
+import 'package:melina_bakes_shared/melina_bakes_shared.dart';
 import '../../../../core/services/storage_service.dart';
 import '../models/user_model.dart';
 
@@ -77,12 +77,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> saveUser(UserModel user) async {
     final json = jsonEncode(user.toJson());
-    await _sharedStorage.setString(StorageKeys.userProfile, json);
+    await _sharedStorage.setString(StorageKeys.userData, json);
   }
 
   @override
   Future<UserModel?> getUser() async {
-    final json = await _sharedStorage.getString(StorageKeys.userProfile);
+    final json = await _sharedStorage.getString(StorageKeys.userData);
     if (json == null) return null;
     try {
       return UserModel.fromJson(jsonDecode(json) as Map<String, dynamic>);
@@ -93,7 +93,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> clearUser() async {
-    await _sharedStorage.remove(StorageKeys.userProfile);
+    await _sharedStorage.remove(StorageKeys.userData);
   }
 
   @override

@@ -11,7 +11,7 @@ class ErrorInterceptor extends Interceptor {
     final res = err.response;
     if (res != null) {
       final d = res.data as Map<String, dynamic>?;
-      final msg = d?['error']?['message'] ?? d?['message'] ?? 'An error occurred';
+      final msg = (d?['error']?['message'] ?? d?['message'] ?? 'An error occurred') as String;
       final code = d?['error']?['code'] as String?;
       switch (res.statusCode) {
         case 400:
@@ -31,7 +31,7 @@ class ErrorInterceptor extends Interceptor {
             error: NotFoundException(msg, code: code));
           break;
         case 422:
-          final fe = (d?['error']?['fields'] as Map<String, dynamic>?)?.map((k, v) => MapEntry(k, v.toString()));
+          final fe = ((d?['error']?['fields'] as Map<String, dynamic>?)?.map((k, v) => MapEntry(k, v.toString()))) ?? <String, String>{};
           err = DioException(requestOptions: err.requestOptions, response: res, type: err.type,
             error: ValidationException(msg, fieldErrors: fe, code: code));
           break;

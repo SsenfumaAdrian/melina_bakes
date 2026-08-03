@@ -83,7 +83,7 @@ class ApiClient {
       case DioExceptionType.badResponse:
         final sc = e.response?.statusCode;
         final d = e.response?.data as Map<String, dynamic>?;
-        final msg = d?['error']?['message'] ?? d?['message'] ?? 'Server error';
+        final msg = (d?['error']?['message'] ?? d?['message'] ?? 'Server error') as String;
         final code = d?['error']?['code'] as String?;
         if (sc == 401) return AuthFailure(message: msg, code: code);
         if (sc == 403) return ForbiddenFailure(message: msg, code: code);

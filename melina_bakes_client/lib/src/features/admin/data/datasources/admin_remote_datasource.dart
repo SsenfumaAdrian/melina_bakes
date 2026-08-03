@@ -1,7 +1,7 @@
 library;
 
 import 'package:melina_bakes_shared/melina_bakes_shared.dart';
-import '../../../core/network/api_client.dart';
+import '../../../../core/network/api_client.dart';
 import '../../domain/entities/admin_coupon_entity.dart';
 import '../../domain/entities/admin_customer_entity.dart';
 import '../../domain/entities/admin_dashboard_entity.dart';
@@ -26,7 +26,7 @@ class AdminRemoteDataSource {
   static const _base = '/admin';
 
   Future<Result<AdminDashboardEntity, Failure>> getDashboardStats() =>
-      _api.get<Map<String, dynamic>>(
+      _api.get<AdminDashboardEntity>(
         '$_base/dashboard',
         parser: (d) => AdminDashboardModel.fromJson(d as Map<String, dynamic>),
       );
