@@ -13,6 +13,11 @@ services:
       - postgres_prod_data:/var/lib/postgresql/data
     networks:
       - melina_prod_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     deploy:
       resources:
         limits:
@@ -28,6 +33,11 @@ services:
       - redis_prod_data:/data
     networks:
       - melina_prod_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   server:
     build:
@@ -51,8 +61,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - melina_prod_network
     deploy:

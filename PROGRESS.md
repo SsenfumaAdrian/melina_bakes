@@ -21,8 +21,8 @@
 | 6 | Product Catalog UI | ✅ Complete | `499b616` | 2026-08-01 |
 | 7 | Shopping Cart | ✅ Complete | `94b83af` | 2026-08-01 |
 | 8 | Order Management | ✅ Complete | — | 2026-08-02 |
-| 9 | Admin Dashboard | 🔄 **NEXT** | — | — |
-| 10 | Deployment & DevOps | ⏳ Pending | — | — |
+| 9 | Admin Dashboard | ✅ Complete | `ae32e00` | 2026-08-03 |
+| 10 | Deployment & DevOps | ✅ Complete | — | 2026-08-03 |
 
 ---
 
@@ -529,15 +529,76 @@ Pending → Confirmed → Preparing → Baking → Ready → Out for Delivery �
 
 ---
 
-## ⏳ PHASE 10: DEPLOYMENT & DEVOPS (PENDING)
+## ✅ PHASE 10: DEPLOYMENT & DEVOPS (COMPLETED)
 
-### Planned Features
-- Production Docker Compose
-- SSL/TLS configuration
-- Environment variable management
-- Health checks
-- Log aggregation
-- Monitoring & alerting
+### Timeline
+- **Completed:** 2026-08-03
+
+### What Was Built
+
+#### Server Entry Point (`melina_bakes_server/bin/main.dart`)
+- Boots all 8 endpoint groups: Health, Auth, Bakery, Cart, Orders, Customer, Admin, Payments
+- Serverpod `ServerBuilder` with YAML config and modular endpoint registration
+
+#### Health Check (`melina_bakes_server/lib/src/endpoints/health/`)
+- `GET /health` endpoint returns uptime, timestamp, and component status (API, database, redis)
+- Used by Docker HEALTHCHECK, Kubernetes probes, Nginx monitoring
+
+#### Environment Configuration
+- `.env.dev` — Development secrets for docker-compose.dev.yml (committed with safe defaults)
+- `.env.prod.example` — Production template (real `.env.prod` is git-ignored)
+- `.gitignore` updated to protect `.env.prod` while allowing the example template
+
+#### Production Config (`melina_bakes_server/config/production.yaml`)
+- Full production Serverpod config with HTTPS, 25 DB connections, secure defaults
+- All sensitive values use `$PROD_*` env var placeholders (substituted at deploy time)
+
+#### CI/CD Pipelines (`.github/workflows/`)
+- **CI (`ci.yml`)** — Multi-job pipeline on push to main/develop and PRs:
+  - `analyze-shared` — Dart analyze with `--fatal-infos`
+  - `analyze-server` — Dart analyze
+  - `analyze-client` — Flutter analyze
+  - `test-server` — Dart test with ephemeral PostgreSQL service container
+  - `test-client` — Flutter test (headless Chrome)
+  - `build-client` — `flutter build web --release` + artifact upload
+- **CD (`cd.yml`)** — On push to main or version tags:
+  - `build-and-push` — Docker buildx multi-platform, push to GitHub Container Registry (ghcr.io)
+  - `build-web` — Flutter web production build, 30-day artifact retention
+  - `deploy` — SSH-based deployment to production server (docker compose up -d)
+  - `health-check` — Post-deploy HTTPS health check
+
+#### Docker Infrastructure Fixes
+- `docker-compose.prod.yml` — Added healthchecks to postgres + redis, `condition: service_healthy` on server depends_on
+- `docker/init-scripts/01-init.sql` — Database seed: 7 categories, admin user placeholder
+- `docker/nginx/ssl/` directory created with placeholder for SSL certs
+
+#### SSL/TS / SSL Certificate Scripts
+- `scripts/generate_ssl_certs.sh` — Bash: generates self-signed cert for dev, Let's Encrypt certbot instructions for production with auto-renewal deploy hook
+- `scripts/generate_ssl_certs.bat` — Windows batch version using OpenSSL from Git for Windows
+
+### Files Created
+| File | Description |
+|------|-------------|
+| `melina_bakes_server/bin/main.dart` | Server entry point (8 endpoint groups) |
+| `melina_bakes_server/config/production.yaml` | Production config with env placeholders |
+| `melina_bakes_server/lib/src/endpoints/health/health_endpoint.dart` | Health check logic |
+| `melina_bakes_server/lib/src/endpoints/health/health_endpoints.dart` | Health barrel export |
+| `.env.dev` | Development environment variables |
+| `.env.prod.example` | Production env template |
+| `.github/workflows/ci.yml` | Continuous Integration pipeline |
+| `.github/workflows/cd.yml` | Continuous Delivery pipeline |
+| `docker/init-scripts/01-init.sql` | DB seed data |
+| `scripts/generate_ssl_certs.sh` | SSL cert generation (bash) |
+| `scripts/generate_ssl_certs.bat` | SSL cert generation (Windows) |
+
+### Key Decisions
+- **Serverpod `ServerBuilder`** — Uses the 2.x ServerBuilder API with modular endpoints for clean bootstrap
+- **Health check endpoint** — Dedicated `HealthCheckEndpoint` instead of inline middleware for better decoupling and non-authenticated access
+- **GitHub Container Registry (ghcr.io)** — Free container registry integrated with GitHub Actions, no external Docker Hub account needed
+- **Env var templates** — Production secrets use `$PROD_*` placeholders in YAML config, substituted at deploy time via docker-compose env vars
+- **Multi-stage Docker build** — `dart compile exe` produces a compact AOT binary (~20MB) running on `debian:bookworm-slim` with no Dart SDK dependency
+- **Service health checks** — All three services (postgres, redis, server) have `healthcheck` blocks; server uses `depends_on: condition: service_healthy` for guaranteed startup ordering
+- **Cascade deploy** — CD pipeline runs health-check job as the final step, ensuring the new deployment is actually reachable before reporting success
 
 ---
 

@@ -102,30 +102,25 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
   }
 
   Widget _buildUserMenu(BuildContext context, UserEntity? user) {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(UIConstants.spacingMd),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            if (user != null) ...[
-              const Divider(),
-              ListTile(
-                leading: CircleAvatar(backgroundColor: AppColors.primary,
-                  child: Text(user.initials, style: const TextStyle(color: AppColors.white))),
-                title: Text(user.displayName, style: Theme.of(context).textTheme.labelMedium, overflow: TextOverflow.ellipsis),
-                subtitle: Text(user.role.displayName, style: Theme.of(context).textTheme.labelSmall),
-                onTap: () => context.go(RouteNames.profile),
-              ),
-            ],
-            ListTile(
-              leading: const Icon(Icons.logout_outlined),
-              title: const Text('Logout'),
-              onTap: () => ref.read(authControllerProvider.notifier).logout(),
-            ),
-          ]),
+    return Padding(
+      padding: const EdgeInsets.all(UIConstants.spacingMd),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        if (user != null) ...[
+          const Divider(),
+          ListTile(
+            leading: CircleAvatar(backgroundColor: AppColors.primary,
+              child: Text(user.initials, style: const TextStyle(color: AppColors.white))),
+            title: Text(user.displayName, style: Theme.of(context).textTheme.labelMedium, overflow: TextOverflow.ellipsis),
+            subtitle: Text(user.role.displayName, style: Theme.of(context).textTheme.labelSmall),
+            onTap: () => context.go(RouteNames.profile),
+          ),
+        ],
+        ListTile(
+          leading: const Icon(Icons.logout_outlined),
+          title: const Text('Logout'),
+          onTap: () => ref.read(authControllerProvider.notifier).logout(),
         ),
-      ),
+      ]),
     );
   }
 }

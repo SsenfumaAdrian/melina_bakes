@@ -39,6 +39,16 @@ logs/
 .env
 .env.local
 .env.production
+.env.prod
+!.env.prod.example
+
+# OpenCode config (may contain API keys)
+.opencode/opencode.json
+.opencode/
+AGENTS.md
+
+# Graphify knowledge graph (generated)
+graphify-out/
 
 # Docker volumes
 docker/postgres_data/

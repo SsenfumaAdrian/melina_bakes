@@ -21,8 +21,8 @@
 | 6 | ✅ Complete | Product Catalog UI (Listing, Detail, Categories, Search) |
 | 7 | ✅ Complete | Shopping Cart (Add, Update, Remove, Coupon, Checkout) |
 | 8 | ✅ Complete | Order Management (List, Detail, Tracking, Cancel, Checkout) |
-| 9 | ⏳ Pending | Admin Dashboard |
-| 10 | ⏳ Pending | Deployment & DevOps |
+| 9 | ✅ Complete | Admin Dashboard |
+| 10 | ✅ Complete | Deployment & DevOps |
 
 **📋 See [PROGRESS.md](PROGRESS.md) for detailed build status and handoff notes.**
 
@@ -229,7 +229,14 @@ flutter run -d chrome
 - **Shell Navigation**: 8 admin routes in bottom nav + GoRouter — Dashboard, Orders, Products, Customers, Inventory, Reports, Staff, Coupons
 - **29 files, ~2,300 lines, 8 screens, 8 Riverpod controllers**
 
-### ⏳ Phase 10 — Deployment & DevOps
+### ✅ Phase 10 — Deployment & DevOps
+- **Server Entry Point**: Serverpod `ServerBuilder` with 8 endpoint groups and CORS config
+- **Health Check**: `GET /health` endpoint for Docker/Kubernetes/Nginx monitoring
+- **Environment Management**: `.env.dev` (committed), `.env.prod.example` (template), git-ignored `.env.prod`
+- **Production Config**: Full `production.yaml` with `$PROD_*` env var placeholders
+- **CI/CD Pipeline**: Multi-job CI (analyze → test → build) + CD (Docker push → SSH deploy → health check)
+- **Docker Infrastructure**: Healthcheck fix on prod compose, DB seed script, SSL directory
+- **SSL Scripts**: Self-signed cert generator for dev, Let's Encrypt certbot setup for production
 
 ---
 
