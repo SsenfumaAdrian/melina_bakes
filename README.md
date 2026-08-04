@@ -1,3 +1,8 @@
+### 📖 Docs: [PROGRESS](./PROGRESS.md) | [README](./README.md) | [SSH_SIGNING_KEY](./SSH_SIGNING_KEY.md)
+---
+
+
+
 # 🧁 Melina Bakes — Enterprise Bakery Management Platform
 
 > **Production-ready, enterprise-grade bakery management system built entirely in Dart.**
